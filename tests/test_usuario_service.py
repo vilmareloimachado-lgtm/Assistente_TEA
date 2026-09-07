@@ -47,9 +47,9 @@ class TestUsuarioService(unittest.TestCase):
             "Ana", 
             "direto",
             "Moderado",
-            "1990/01/01",
+            "01/01/1990",
             "123456",
-            "2026/09/02" 
+            "02/09/2026" 
  ) 
         self.assertEqual(usuario.nome, "Ana") 
  
@@ -59,9 +59,9 @@ class TestUsuarioService(unittest.TestCase):
                 "   ", 
                 "direto",
                 "Moderado",
-                "1990/01/01",
+                "01/01/1990",
                 "123456",
-                "2026/09/02" 
+                "02/09/2026" 
  
             ) 
  
@@ -70,9 +70,9 @@ class TestUsuarioService(unittest.TestCase):
             "Leo", 
             "direto",
             "Moderado",
-            "1990/01/01",
+            "01/01/1990",
             "123456",
-            "2026/09/02" 
+            "02/09/2026" 
 
         ) 
  
@@ -81,9 +81,9 @@ class TestUsuarioService(unittest.TestCase):
                 "Leo", 
                 "direto",
                 "Moderado",
-                "1990/01/01",
+                "01/01/1990",
                 "123456",
-                "2026/09/02" 
+                "02/09/2026" 
             ) 
  
     def test_nao_aceita_estilo_invalido(self): 
@@ -92,9 +92,9 @@ class TestUsuarioService(unittest.TestCase):
                 "Bia", 
                 "gigante",
                 "Moderado",
-                "1990/01/01",
+                "01/01/1990",
                 "123456",
-                "2026/09/02" 
+                "02/09/2026" 
  
             ) 
     def test_nao_aceita_nome_muito_curto(self): 
@@ -103,9 +103,9 @@ class TestUsuarioService(unittest.TestCase):
                 "Al", 
                 "direto",
                 "Moderado",
-                "1990/01/01",
+                "01/01/1990",
                 "123456",
-                "2026/09/02" 
+                "02/09/2026" 
             )
  
 if __name__ == "__main__": 

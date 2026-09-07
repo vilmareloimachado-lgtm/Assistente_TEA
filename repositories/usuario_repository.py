@@ -15,21 +15,22 @@ class UsuarioRepository:
             comando = select(Usuario).where(Usuario.nome == nome) 
             return session.scalar(comando) 
  
-    def criar(self, nome, estilo_instrucao, nivel_suporte, data_nascimento, senha_login, criado_em): 
+    def criar(self, nome, estilo_instrucao, nivel_suporte, data_nascimento, senha_login, criado_em=None): 
         with SessionLocal() as session: 
             usuario = Usuario( 
                 nome=nome, 
                 estilo_instrucao=estilo_instrucao, 
                 nivel_suporte=nivel_suporte,
                 data_nascimento=data_nascimento,
-                senha_login=senha_login,
-                criado_em=criado_em
-            ) 
+                senha_login=senha_login
+            )
+            if criado_em is not None:
+                usuario.criado_em = criado_em
             session.add(usuario) 
             session.commit() 
             session.refresh(usuario) 
-            return usuario 
- 
+            return usuario
+            
     def excluir_por_nome(self, nome): 
         with SessionLocal() as session: 
             usuario = session.scalar( 
