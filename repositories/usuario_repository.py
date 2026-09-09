@@ -15,6 +15,10 @@ class UsuarioRepository:
             comando = select(Usuario).where(Usuario.nome == nome) 
             return session.scalar(comando) 
  
+    def buscar_por_id(self, usuario_id):
+        with SessionLocal() as session:
+            return session.get(Usuario, usuario_id)
+
     def criar(self, nome, estilo_instrucao, nivel_suporte, data_nascimento, senha_login, criado_em=None): 
         with SessionLocal() as session: 
             usuario = Usuario( 
@@ -31,6 +35,30 @@ class UsuarioRepository:
             session.refresh(usuario) 
             return usuario
             
+    def atualizar_por_nome(self, nome, novo_nome=None, estilo_instrucao=None,
+                            nivel_suporte=None, data_nascimento=None, senha_login=None):
+        with SessionLocal() as session:
+            usuario = session.scalar(
+                select(Usuario).where(Usuario.nome == nome)
+            )
+            if usuario is None:
+                return None
+
+            if novo_nome is not None:
+                usuario.nome = novo_nome
+            if estilo_instrucao is not None:
+                usuario.estilo_instrucao = estilo_instrucao
+            if nivel_suporte is not None:
+                usuario.nivel_suporte = nivel_suporte
+            if data_nascimento is not None:
+                usuario.data_nascimento = data_nascimento
+            if senha_login is not None:
+                usuario.senha_login = senha_login
+
+            session.commit()
+            session.refresh(usuario)
+            return usuario
+
     def excluir_por_nome(self, nome): 
         with SessionLocal() as session: 
             usuario = session.scalar( 

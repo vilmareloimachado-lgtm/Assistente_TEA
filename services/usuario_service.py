@@ -38,6 +38,45 @@ class UsuarioService:
             raise ValueError("Perfil não encontrado.")
         return usuario
 
+    def atualizar_usuario(self, nome, novo_nome=None, estilo_instrucao=None,
+                           nivel_suporte=None, data_nascimento=None, senha_login=None):
+        nome = nome.strip()
+
+        usuario_atual = self.repository.buscar_por_nome(nome)
+        if usuario_atual is None:
+            raise ValueError("Perfil não encontrado.")
+
+        if novo_nome is not None:
+            novo_nome = novo_nome.strip()
+            if not self.validar_nome(novo_nome):
+                raise ValueError("Nome inválido! Digite apenas letras e espaços.")
+            if len(novo_nome) < 3:
+                raise ValueError("O nome precisa ter pelo menos 3 caracteres.")
+            if novo_nome != nome and self.repository.buscar_por_nome(novo_nome) is not None:
+                raise ValueError("Já existe um perfil com esse nome.")
+
+        if estilo_instrucao is not None and estilo_instrucao not in {"direto", "detalhado"}:
+            raise ValueError("O estilo deve ser 'direto' ou 'detalhado'.")
+
+        if nivel_suporte is not None and nivel_suporte not in {"Leve", "Moderado", "Severo"}:
+            raise ValueError("O nível de suporte deve ser 'Leve', 'Moderado' ou 'Severo'.")
+
+        if senha_login is not None:
+            self.validar_senha(senha_login)
+            senha_login = self.criptografar_senha(senha_login)
+
+        if data_nascimento is not None:
+            data_nascimento = self.validar_data_nascimento(data_nascimento)
+
+        return self.repository.atualizar_por_nome(
+            nome,
+            novo_nome=novo_nome,
+            estilo_instrucao=estilo_instrucao,
+            nivel_suporte=nivel_suporte,
+            data_nascimento=data_nascimento,
+            senha_login=senha_login
+        )
+
     def excluir_usuario(self, nome):
         nome = nome.strip()
         excluido = self.repository.excluir_por_nome(nome)
