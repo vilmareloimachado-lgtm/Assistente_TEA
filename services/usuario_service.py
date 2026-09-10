@@ -38,6 +38,9 @@ class UsuarioService:
             raise ValueError("Perfil não encontrado.")
         return usuario
 
+    def buscar_usuario_por_id(self, usuario_id):
+        return self.repository.buscar_por_id(usuario_id)
+
     def atualizar_usuario(self, nome, novo_nome=None, estilo_instrucao=None,
                            nivel_suporte=None, data_nascimento=None, senha_login=None):
         nome = nome.strip()

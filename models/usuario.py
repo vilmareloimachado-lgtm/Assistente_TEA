@@ -14,11 +14,13 @@ class Usuario(Base):
     data_nascimento = Column(DateTime)
     senha_login = Column(String(100), nullable=False)
     criado_em = Column(DateTime, server_default=func.now())      
-    
-    def __repr__(self):         
-        return (             
-            f"Usuario(id={self.id}, "             
+
+    def __repr__(self):
+        return (
+            f"Usuario(id={self.id}, "
             f"nome='{self.nome}', "
-            f"estilo='{self.estilo_instrucao}' "
-            f"suporte='{self.nivel_suporte}' "         
-            f"estilo='{self.estilo_instrucao}')"         ) 
+            f"estilo='{self.estilo_instrucao}', "
+            f"suporte='{self.nivel_suporte}', "
+            f"nascimento='{self.data_nascimento}')"
+        )
+    

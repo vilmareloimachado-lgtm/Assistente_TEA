@@ -14,9 +14,11 @@ from datetime import datetime
 
 from controllers.usuario_controller import UsuarioController
 from controllers.tarefa_controller import TarefaController
+from controllers.ia_controller import IaController
 
 usuario_controller = UsuarioController()
 tarefa_controller = TarefaController()
+ia_controller = IaController()
 
 
 # ---------- helpers de entrada validada ----------
@@ -130,7 +132,7 @@ def listar_tarefas(usuario_id):
         print("(nenhuma tarefa cadastrada ainda)")
     for t in tarefas:
         status = "[X]" if t["concluida"] else "[ ]"
-        print(f"\n{status} {t['titulo']} ({t['tarefa_id']}, {t['tipo']}, prioridade={t['prioridade']})")
+        print(f"\n{status} {t['tarefa_id']}. {t['titulo']} ({t['tipo']}, prioridade={t['prioridade']})")
         if t["descricao"]:
             print("   Descrição:", t["descricao"])
         if t["prazo"]:
@@ -222,9 +224,91 @@ def excluir_tarefa(usuario_id):
     print("\n" + resultado["mensagem"])
 
 
+def _barra_progresso(concluidos, total, largura=15):
+    if total == 0:
+        return "[" + "-" * largura + "]", 0
+    percentual = round((concluidos / total) * 100)
+    preenchido = round((concluidos / total) * largura)
+    barra = "[" + "=" * preenchido + "-" * (largura - preenchido) + "]"
+    return barra, percentual
+
+
 def resumo(usuario_id):
-    print("\n--- Resumo de tarefas ---")
-    print(tarefa_controller.resumo_tarefas(usuario_id))
+    dados = tarefa_controller.resumo_tarefas(usuario_id)
+
+    print("\n" + "=" * 52)
+    print("DASHBOARD".center(52))
+    print("=" * 52)
+
+    if dados["total"] == 0:
+        print("Nenhuma tarefa cadastrada ainda.")
+        print("=" * 52)
+        input("\nPressione Enter para voltar.")
+        return
+
+    barra_geral, pct_geral = _barra_progresso(dados["concluidas"], dados["total"])
+    print(f"Progresso geral: {dados['concluidas']}/{dados['total']} tarefas concluídas ({pct_geral}%)")
+    print(barra_geral)
+
+    print("\n--- Por tipo ---")
+    nomes_tipo = {
+        "tarefas_diarias": "Rotina diária",
+        "tarefas_educacionais": "Estudos e atividades",
+    }
+    for tipo, nome in nomes_tipo.items():
+        info = dados["por_tipo"].get(tipo, {"total": 0, "concluidas": 0})
+        barra, pct = _barra_progresso(info["concluidas"], info["total"])
+        print(f"{nome:<22} {barra} {pct}% ({info['concluidas']}/{info['total']})")
+
+    print("\n--- Por prioridade ---")
+    nomes_prioridade = {"alta": "Alta", "media": "Média", "baixa": "Baixa"}
+    for prioridade, nome in nomes_prioridade.items():
+        info = dados["por_prioridade"].get(prioridade, {"total": 0, "concluidas": 0})
+        print(f"{nome:<8} {info['total']} tarefa(s) ({info['concluidas']} concluída(s))")
+
+    print("\n--- Atenção ---")
+    print(f"Tarefas com prazo vencido: {dados['vencidas']}")
+
+    print("\n--- Passos ---")
+    passos = dados["passos"]
+    barra_passos, pct_passos = _barra_progresso(passos["concluidos"], passos["total"])
+    print(f"Progresso de passos: {passos['concluidos']}/{passos['total']} concluídos ({pct_passos}%)")
+    print(barra_passos)
+
+    print("=" * 52)
+    input("\nPressione Enter para voltar.")
+
+
+def desmembrar_com_ia(usuario_id):
+    print("\n--- Desmembrar tarefa com IA ---")
+    tarefa_id = _selecionar_tarefa_do_usuario(usuario_id)
+    if tarefa_id is None:
+        return
+
+    while True:
+        resultado = ia_controller.sugerir_passos(tarefa_id)
+        if not resultado["sucesso"]:
+            print("\n" + resultado["mensagem"])
+            return
+
+        print("\nPassos sugeridos pela IA:")
+        for i, p in enumerate(resultado["passos"], start=1):
+            print(f"  {i}. {p}")
+
+        print("\n1. Aceitar sugestão")
+        print("2. Gerar novamente")
+        print("3. Cancelar")
+        opcao = input("Escolha: ").strip()
+
+        if opcao == "1":
+            confirmacao = tarefa_controller.definir_passos_ia(tarefa_id, resultado["passos"])
+            print("\n" + confirmacao["mensagem"])
+            return
+        elif opcao == "2":
+            continue
+        else:
+            print("\nSugestão descartada. Nenhum passo foi alterado.")
+            return
 
 
 def main():
@@ -244,9 +328,10 @@ def main():
         print("5. Marcar tarefa como concluída/pendente")
         print("6. Editar tarefa")
         print("7. Excluir tarefa")
-        print("8. Ver resumo (total/concluídas/pendentes)")
+        print("8. Ver Dashboard")
         print("9. Trocar de perfil")
-        print("10. Sair")
+        print("10. Desmembrar tarefa com IA")
+        print("11. Sair")
 
         opcao = input("\nEscolha: ").strip()
 
@@ -272,6 +357,8 @@ def main():
                 break
             nome, usuario_id = selecao
         elif opcao == "10":
+            desmembrar_com_ia(usuario_id)
+        elif opcao == "11":
             print("Até logo!")
             break
         else:

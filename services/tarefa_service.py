@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 
 from repositories.tarefa_repository import TarefaRepository
 from repositories.usuario_repository import UsuarioRepository
@@ -96,4 +96,38 @@ class TarefaService:
         total = len(tarefas)
         concluidas = sum(1 for t in tarefas if t.concluida)
         pendentes = total - concluidas
-        return {"total": total, "concluidas": concluidas, "pendentes": pendentes}
+
+        por_tipo = {}
+        for tipo in self.TIPOS_VALIDOS:
+            tarefas_tipo = [t for t in tarefas if t.tipo == tipo]
+            por_tipo[tipo] = {
+                "total": len(tarefas_tipo),
+                "concluidas": sum(1 for t in tarefas_tipo if t.concluida),
+            }
+
+        por_prioridade = {}
+        for prioridade in self.PRIORIDADES_VALIDAS:
+            tarefas_prioridade = [t for t in tarefas if t.prioridade == prioridade]
+            por_prioridade[prioridade] = {
+                "total": len(tarefas_prioridade),
+                "concluidas": sum(1 for t in tarefas_prioridade if t.concluida),
+            }
+
+        hoje = date.today()
+        vencidas = sum(
+            1 for t in tarefas
+            if not t.concluida and t.prazo is not None and t.prazo < hoje
+        )
+
+        total_passos = sum(len(t.passos) for t in tarefas)
+        passos_concluidos = sum(sum(1 for p in t.passos if p.concluido) for t in tarefas)
+
+        return {
+            "total": total,
+            "concluidas": concluidas,
+            "pendentes": pendentes,
+            "por_tipo": por_tipo,
+            "por_prioridade": por_prioridade,
+            "vencidas": vencidas,
+            "passos": {"total": total_passos, "concluidos": passos_concluidos},
+        }
