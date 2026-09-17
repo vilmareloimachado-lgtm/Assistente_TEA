@@ -1,14 +1,3 @@
-"""
-Menu interativo para testar de verdade a camada fatiada de usuário
-(controller -> service -> repository -> MySQL), com entrada de dados
-digitada pelo usuário via terminal.
-
-Rode este arquivo na raiz do projeto (mesmo nível do main.py):
-    python menu_usuario_interativo.py
-
-Requer que o MySQL esteja rodando e configurado no .env (DB_HOST, DB_USER, etc).
-"""
-
 import re
 from datetime import datetime
 

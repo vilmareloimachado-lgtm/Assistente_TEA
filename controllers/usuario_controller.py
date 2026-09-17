@@ -9,7 +9,7 @@ class UsuarioController:
         usuarios = self.service.listar_usuarios() 
         return [usuario.nome for usuario in usuarios] 
     
-    def buscar_perfil(self, nome):        # <- é este método aqui
+    def buscar_perfil(self, nome):        
         try:
             usuario = self.service.buscar_usuario(nome)
             return {

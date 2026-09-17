@@ -61,11 +61,11 @@ def carregar_dados() -> Dict[str, Any]:
 
         dados[nome] = {
             "preferencias": {
-                "estilo_instrucao": usuario["estilo_instrucao"],
-                "nivel_suporte": usuario["nivel_suporte"],
-                "data_nascimento": data_nasc, 
-                "senha_login": usuario["senha_login"]
+                "estilo_instrucao": usuario["estilo_instrucao"]
             },
+            "nivel_suporte": usuario["nivel_suporte"],
+            "data_nascimento": data_nasc,
+            "senha_login": usuario["senha_login"],
             "tarefas_diarias": [],
             "tarefas_educacionais": []
         }
