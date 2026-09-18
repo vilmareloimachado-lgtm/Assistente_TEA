@@ -1,3 +1,4 @@
+from models import tarefa
 from services.tarefa_service import TarefaService
 
 
@@ -69,12 +70,13 @@ class TarefaController:
 
     def _formatar(self, tarefa):
         return {
-            "tarefa_id": tarefa.id,
-            "titulo": tarefa.titulo,
-            "descricao": tarefa.descricao,
-            "tipo": tarefa.tipo,
-            "prioridade": tarefa.prioridade,
-            "prazo": tarefa.prazo.strftime("%d/%m/%Y") if tarefa.prazo else "",
-            "concluida": tarefa.concluida,
-            "passos": [{"texto": p.texto, "concluido": p.concluido} for p in tarefa.passos]
-        }
+        "tarefa_id": tarefa.id,
+        "titulo": tarefa.titulo,
+        "descricao": tarefa.descricao,
+        "tipo": tarefa.tipo,
+        "prioridade": tarefa.prioridade,
+        "prazo": tarefa.prazo.strftime("%d/%m/%Y") if tarefa.prazo else "",
+        "concluida": tarefa.concluida,
+        "passos": [{"passo_id": p.id, "texto": p.texto, "concluido": p.concluido} for p in tarefa.passos]
+    }
+    

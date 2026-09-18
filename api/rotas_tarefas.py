@@ -18,6 +18,8 @@ class NovaTarefa(BaseModel):
     prioridade: str = "media"
     prazo: str = ""
 
+class NovosPassos(BaseModel):
+    textos: list[str]
 
 @router.get("/{usuario_id}")
 def listar_tarefas(usuario_id: int):
@@ -40,8 +42,24 @@ def criar_tarefa(usuario_id: int, dados: NovaTarefa):
 
     if not resposta["sucesso"]:
         raise HTTPException(
-            status_code=422,
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=resposta["mensagem"]
         )
 
     return resposta
+
+@router.post("/{tarefa_id}/passos", status_code=status.HTTP_201_CREATED)
+def definir_passos(tarefa_id: int, dados: NovosPassos):
+    resposta = controller.definir_passos_ia(tarefa_id, dados.textos)
+    if not resposta["sucesso"]:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=resposta["mensagem"]
+        )
+
+    return resposta
+
+@router.get("/{usuario_id}/dashboard")
+def dashboard(usuario_id: int):
+    return controller.resumo_tarefas(usuario_id)
+
