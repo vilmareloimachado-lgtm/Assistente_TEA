@@ -17,7 +17,9 @@ class UsuarioController:
                 "mensagem": f"Perfil {usuario.nome} encontrado.",
                 "usuario_id": usuario.id,
                 "usuario_nome": usuario.nome,
-                "data_nascimento": self._formatar_data(usuario.data_nascimento)
+                "data_nascimento": self._formatar_data(usuario.data_nascimento),
+                "email": usuario.email,
+                "tipo_usuario": usuario.tipo_usuario
             }
         except ValueError as erro:
             return {
@@ -26,7 +28,8 @@ class UsuarioController:
             }
 
     def atualizar_perfil(self, nome, novo_nome=None, estilo_instrucao=None,
-                          nivel_suporte=None, data_nascimento=None, senha_login=None):
+                          nivel_suporte=None, data_nascimento=None, senha_login=None,
+                          email=None, tipo_usuario=None):
         try:
             usuario = self.service.atualizar_usuario(
                 nome,
@@ -34,7 +37,9 @@ class UsuarioController:
                 estilo_instrucao=estilo_instrucao,
                 nivel_suporte=nivel_suporte,
                 data_nascimento=data_nascimento,
-                senha_login=senha_login
+                senha_login=senha_login,
+                email=email,
+                tipo_usuario=tipo_usuario
             )
             return {
                 "sucesso": True,
@@ -65,7 +70,8 @@ class UsuarioController:
             return ""
         return data.strftime("%d/%m/%Y")
     
-    def criar_perfil(self, nome, estilo_instrucao, nivel_suporte, data_nascimento, senha_login, criado_em=None):
+    def criar_perfil(self, nome, estilo_instrucao, nivel_suporte, data_nascimento, senha_login,
+                  email, tipo_usuario="cuidador", criado_em=None):
         try: 
             usuario = self.service.criar_usuario( 
                 nome, 
@@ -73,17 +79,19 @@ class UsuarioController:
                 nivel_suporte,
                 data_nascimento,
                 senha_login,
+                email,
+                tipo_usuario,
                 criado_em
-             ) 
- 
+             )
+             
             return { 
                 "sucesso": True, 
                 "mensagem": f"Perfil {usuario.nome} criado.", 
                 "usuario_id": usuario.id 
             } 
- 
+
         except ValueError as erro: 
             return { 
                 "sucesso": False, 
                 "mensagem": str(erro) 
-            } 
+            }

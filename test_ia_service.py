@@ -15,6 +15,14 @@ class RespostaFake:
     def __init__(self, text):
         self.text = text
 
+class ChatFake:
+    """Simula o objeto de chat (sessão) que client.chats.create() devolve de verdade."""
+
+    def __init__(self, texto_resposta):
+        self.texto_resposta = texto_resposta
+
+    def send_message(self, mensagem):
+        return RespostaFake(self.texto_resposta)
 
 class GeminiClientFake:
     """Substitui o client do Gemini para capturar o que foi enviado, sem chamar a API de verdade."""
@@ -28,7 +36,13 @@ class GeminiClientFake:
                 self.ultima_system_instruction = config.system_instruction
                 return RespostaFake(self.texto_resposta)
 
+        class _Chats:
+            def create(_self, model, config):
+                self.ultima_system_instruction = config.system_instruction
+                return ChatFake(self.texto_resposta)
+
         self.models = _Models()
+        self.chats = _Chats()
 
 
 class TestIaService(unittest.TestCase):
@@ -66,6 +80,13 @@ class TestIaService(unittest.TestCase):
 
         self.assertEqual(passos, ["Abrir o caderno", "Ler o capítulo"])
 
+    def test_obter_resposta_chat_remove_bullets_duplicados(self):
+        client = GeminiClientFake(texto_resposta="- Lave o rosto\n* Escove os dentes\n• Vista a roupa")
+        service = IaService(gemini_client=client)
+
+        respostas = service.obter_resposta_chat("Como me arrumo de manhã?", UsuarioFake())
+
+        self.assertEqual(respostas, ["Lave o rosto", "Escove os dentes", "Vista a roupa"])
 
 if __name__ == "__main__":
     unittest.main()

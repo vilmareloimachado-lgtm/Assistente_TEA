@@ -13,6 +13,8 @@ class Usuario(Base):
     nivel_suporte = Column(String(20), nullable=False, default="Leve")
     data_nascimento = Column(DateTime)
     senha_login = Column(String(100), nullable=False)
+    email = Column(String(150), unique=True)
+    tipo_usuario = Column(String(20), nullable=False, default="cuidador")
     criado_em = Column(DateTime, server_default=func.now())      
 
     def __repr__(self):

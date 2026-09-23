@@ -1,4 +1,5 @@
 import os
+import re
 from datetime import date
 
 from google import genai
@@ -22,6 +23,9 @@ class IaService:
 
     def __init__(self, gemini_client=None):
         self.client = gemini_client if gemini_client is not None else _client_padrao
+        # Guarda uma sessão de chat por usuário, para manter a memória
+        # da conversa entre uma pergunta e outra (chave = usuario.id).
+        self._chats = {}
 
     # ---------- montagem de contexto do usuário ----------
 
@@ -73,29 +77,45 @@ class IaService:
         base_prompt += "\n" + self._montar_contexto_usuario(usuario)
         return base_prompt
 
+    def _limpar_marcadores(self, linha: str) -> str:
+        sem_marcador_inicial = linha.lstrip("0123456789.-*• ")
+        sem_negrito = re.sub(r"\*+", "", sem_marcador_inicial)
+        return sem_negrito.strip()
+
+    def _obter_chat(self, usuario):
+        usuario_id = getattr(usuario, "id", None) if usuario else "anonimo"
+
+        if usuario_id not in self._chats:
+            system_instruction = self._instrucao_base_tea(usuario)
+            self._chats[usuario_id] = self.client.chats.create(
+                model=MODELO_GEMINI,
+                config=types.GenerateContentConfig(
+                    system_instruction=system_instruction,
+                    temperature=0.3,
+                    automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
+                ),
+            )
+
+        return self._chats[usuario_id]
+
+    def reiniciar_chat(self, usuario) -> None:
+        usuario_id = getattr(usuario, "id", None) if usuario else "anonimo"
+        self._chats.pop(usuario_id, None)
+
     # ---------- funções expostas ----------
 
     def obter_resposta_chat(self, pergunta: str, usuario=None) -> list:
-        """Conecta ao Gemini para responder dúvidas gerais de estudos ou organização,
-        levando em conta o contexto do usuário (idade, estilo, nível de suporte)."""
         if not self.client:
             raise ValueError(
-                "IA indisponível: configure a variável de ambiente GEMINI_API_KEY."
-            )
+            "IA indisponível: configure a variável de ambiente GEMINI_API_KEY."
+        )
 
-        system_instruction = self._instrucao_base_tea(usuario)
+        chat = self._obter_chat(usuario)
 
         try:
-            response = self.client.models.generate_content(
-                model=MODELO_GEMINI,
-                contents=pergunta,
-                config=types.GenerateContentConfig(
-                    system_instruction=system_instruction,
-                    temperature=0.3,  # Baixa temperatura para manter a resposta factual e focada
-                ),
-            )
-            # Divide a resposta por linhas para bater com a estrutura de exibição da UI do terminal
-            return [linha.strip() for linha in response.text.split("\n") if linha.strip()]
+            response = chat.send_message(pergunta)
+            linhas = [linha.strip() for linha in response.text.split("\n") if linha.strip()]
+            return [self._limpar_marcadores(linha) for linha in linhas if self._limpar_marcadores(linha)]
         except Exception as e:
             raise ValueError(f"Erro ao nos comunicarmos com a IA: {str(e)}")
 
@@ -126,6 +146,7 @@ class IaService:
                 config=types.GenerateContentConfig(
                     system_instruction=system_instruction,
                     temperature=0.2,
+                    automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
                 ),
             )
 
@@ -135,7 +156,7 @@ class IaService:
             # Remove marcadores comuns caso o modelo acabe gerando por teimosia (ex: "-", "*", "1.")
             passos_limpos = []
             for p in passos:
-                p_limpo = p.lstrip("0123456789.-* ")
+                p_limpo = self._limpar_marcadores(p)
                 if p_limpo:
                     passos_limpos.append(p_limpo)
 

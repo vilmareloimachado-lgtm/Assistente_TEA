@@ -25,6 +25,8 @@ CREATE TABLE usuarios (
     nivel_suporte ENUM('Leve', 'Moderado', 'Severo') NOT NULL DEFAULT 'Leve',
     data_nascimento DATE NOT NULL,
     senha_login VARCHAR(255) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    tipo_usuario VARCHAR(20) NOT NULL DEFAULT 'cuidador',
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -75,13 +77,15 @@ INSERT INTO usuarios (
     estilo_instrucao,
     nivel_suporte,
     data_nascimento,
-    senha_login
+    senha_login,
+    email
 ) VALUES (
     'Matheus', 
     'direto',
     'Leve',
     '1990-01-01',
-    'senha_criptografada_aqui'
+    'senha_criptografada_aqui',
+    'matheus@exemplo.com'
 );
 
 INSERT INTO tarefas (usuario_id, tipo, titulo, descricao, prioridade, prazo, concluida) VALUES 
