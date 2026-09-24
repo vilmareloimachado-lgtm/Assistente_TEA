@@ -1,7 +1,7 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Header, Depends
 from pydantic import BaseModel
-
 from controllers.usuario_controller import UsuarioController
+from config.auth import validar_token
 
 router = APIRouter(
     prefix="/usuarios",
@@ -9,6 +9,31 @@ router = APIRouter(
 )
 
 controller = UsuarioController()
+
+def exigir_login(authorization: str = Header(None)):
+    if authorization is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token não enviado. Faça login primeiro."
+        )
+
+    partes = authorization.split(" ")
+    if len(partes) != 2 or partes[0] != "Bearer":
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Formato do token inválido. Use: Bearer <token>."
+        )
+
+    token = partes[1]
+
+    try:
+        return validar_token(token)
+    except ValueError as erro:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(erro)
+        )
+
 
 class NovoUsuario(BaseModel):
     nome: str
@@ -91,7 +116,7 @@ def atualizar_usuario(nome: str, dados: AtualizacaoUsuario):
 
 
 @router.delete("/{nome}")
-def excluir_usuario(nome: str):
+def excluir_usuario(nome: str, usuario_logado: dict = Depends(exigir_login)):
     resposta = controller.excluir_perfil(nome)
 
     if not resposta["sucesso"]:

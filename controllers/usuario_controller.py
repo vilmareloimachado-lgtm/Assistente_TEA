@@ -4,7 +4,25 @@ from services.usuario_service import UsuarioService
 class UsuarioController: 
     def __init__(self, service=None): 
         self.service = service or UsuarioService() 
- 
+
+    def login(self, email, senha):
+        try:
+            usuario = self.service.autenticar(email, senha)
+            token = self.service.gerar_token(usuario)
+            return {
+                "sucesso": True,
+                "mensagem": f"Login realizado com sucesso.",
+                "usuario_id": usuario.id,
+                "nome": usuario.nome,
+                "tipo_usuario": usuario.tipo_usuario,
+                "token": token
+            }
+        except ValueError as erro:
+            return {
+                "sucesso": False,
+                "mensagem": str(erro)
+            }
+        
     def listar_perfis(self): 
         usuarios = self.service.listar_usuarios() 
         return [usuario.nome for usuario in usuarios] 

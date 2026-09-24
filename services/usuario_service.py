@@ -1,8 +1,11 @@
+import jwt
 import hashlib
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from repositories.usuario_repository import UsuarioRepository 
- 
+from config.auth import SECRET_KEY, ALGORITMO, EXPIRACAO_HORAS
+
+
 class UsuarioService: 
     def __init__(self, repository=None): 
         self.repository = repository or UsuarioRepository() 
@@ -45,6 +48,29 @@ class UsuarioService:
     def buscar_usuario_por_id(self, usuario_id):
         return self.repository.buscar_por_id(usuario_id)
 
+    def autenticar(self, email, senha):
+        usuario = self.repository.buscar_por_email(email)
+
+        if usuario is None:
+            raise ValueError("Email ou senha inválidos.")
+
+        senha_criptografada = self.criptografar_senha(senha)
+        if senha_criptografada != usuario.senha_login:
+            raise ValueError("Email ou senha inválidos.")
+        return usuario
+
+    def gerar_token(self, usuario):
+        expira_em = datetime.utcnow() + timedelta(hours=EXPIRACAO_HORAS)
+
+        payload = {
+            "usuario_id": usuario.id,
+            "tipo_usuario": usuario.tipo_usuario,
+            "exp": expira_em
+        }
+
+        return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITMO)
+    
+    
     def atualizar_usuario(self, nome, novo_nome=None, estilo_instrucao=None,
                        nivel_suporte=None, data_nascimento=None, senha_login=None,
                        email=None, tipo_usuario=None):
