@@ -1,7 +1,7 @@
-from fastapi import APIRouter, HTTPException, status, Header, Depends
+from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import BaseModel
 from controllers.usuario_controller import UsuarioController
-from config.auth import validar_token
+from api.permissoes import exigir_login, exigir_tipo_usuario
 
 router = APIRouter(
     prefix="/usuarios",
@@ -9,31 +9,6 @@ router = APIRouter(
 )
 
 controller = UsuarioController()
-
-def exigir_login(authorization: str = Header(None)):
-    if authorization is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token não enviado. Faça login primeiro."
-        )
-
-    partes = authorization.split(" ")
-    if len(partes) != 2 or partes[0] != "Bearer":
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Formato do token inválido. Use: Bearer <token>."
-        )
-
-    token = partes[1]
-
-    try:
-        return validar_token(token)
-    except ValueError as erro:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=str(erro)
-        )
-
 
 class NovoUsuario(BaseModel):
     nome: str
@@ -45,13 +20,13 @@ class NovoUsuario(BaseModel):
     tipo_usuario: str = "cuidador"
     
 @router.get("")
-def listar_usuarios():
+def listar_usuarios(usuario_logado: dict = Depends(exigir_tipo_usuario("cuidador"))):
     return {
         "dados": controller.listar_perfis()
     }
 
 @router.post("", status_code=status.HTTP_201_CREATED)
-def criar_usuario(dados: NovoUsuario):
+def criar_usuario(dados: NovoUsuario, usuario_logado: dict = Depends(exigir_tipo_usuario("cuidador"))):
     resposta = controller.criar_perfil(
         dados.nome,
         dados.estilo_instrucao,
@@ -81,7 +56,7 @@ class AtualizacaoUsuario(BaseModel):
 
 
 @router.get("/{nome}")
-def buscar_usuario(nome: str):
+def buscar_usuario(nome: str, usuario_logado: dict = Depends(exigir_tipo_usuario("cuidador"))):
     resposta = controller.buscar_perfil(nome)
 
     if not resposta["sucesso"]:
@@ -94,7 +69,7 @@ def buscar_usuario(nome: str):
 
 
 @router.put("/{nome}")
-def atualizar_usuario(nome: str, dados: AtualizacaoUsuario):
+def atualizar_usuario(nome: str, dados: AtualizacaoUsuario, usuario_logado: dict = Depends(exigir_tipo_usuario("cuidador"))):
     resposta = controller.atualizar_perfil(
         nome,
         novo_nome=dados.novo_nome,
