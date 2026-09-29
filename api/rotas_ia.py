@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import BaseModel
 
 from controllers.ia_controller import IaController
+from api.permissoes import exigir_login, exigir_mesmo_usuario, exigir_dono_da_tarefa
 
 router = APIRouter(
     prefix="/ia",
@@ -16,7 +17,7 @@ class PerguntaChat(BaseModel):
 
 
 @router.post("/{usuario_id}/chat")
-def chat_livre(usuario_id: int, dados: PerguntaChat):
+def chat_livre(usuario_id: int, dados: PerguntaChat, usuario_logado: dict = Depends(exigir_mesmo_usuario)):
     resposta = controller.chat_livre(usuario_id, dados.pergunta)
 
     if not resposta["sucesso"]:
@@ -29,7 +30,7 @@ def chat_livre(usuario_id: int, dados: PerguntaChat):
 
 
 @router.post("/tarefas/{tarefa_id}/sugerir-passos")
-def sugerir_passos(tarefa_id: int):
+def sugerir_passos(tarefa_id: int, usuario_logado: dict = Depends(exigir_dono_da_tarefa)):
     resposta = controller.sugerir_passos(tarefa_id)
 
     if not resposta["sucesso"]:

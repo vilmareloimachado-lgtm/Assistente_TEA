@@ -116,3 +116,7 @@ class TarefaRepository:
             session.commit()
             session.refresh(passo)
             return passo
+
+    def buscar_passo_por_id(self, passo_id):
+        with SessionLocal() as session:
+            return session.get(Passo, passo_id)

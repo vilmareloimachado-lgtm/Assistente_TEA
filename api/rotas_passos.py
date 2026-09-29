@@ -1,6 +1,7 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 
 from controllers.tarefa_controller import TarefaController
+from api.permissoes import exigir_dono_do_passo
 
 router = APIRouter(
     prefix="/passos",
@@ -11,7 +12,7 @@ controller = TarefaController()
 
 
 @router.patch("/{passo_id}/status")
-def alternar_status_passo(passo_id: int):
+def alternar_status_passo(passo_id: int, usuario_logado: dict = Depends(exigir_dono_do_passo)):
     resposta = controller.alternar_status_passo(passo_id)
 
     if not resposta["sucesso"]:

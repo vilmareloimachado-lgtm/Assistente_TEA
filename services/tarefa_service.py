@@ -91,6 +91,12 @@ class TarefaService:
             raise ValueError("Passo não encontrado.")
         return passo
 
+    def buscar_passo(self, passo_id):
+        passo = self.repository.buscar_passo_por_id(passo_id)
+        if passo is None:
+            raise ValueError("Passo não encontrado.")
+        return passo
+
     def resumo_tarefas(self, usuario_id):
         tarefas = self.repository.listar_por_usuario(usuario_id)
         total = len(tarefas)

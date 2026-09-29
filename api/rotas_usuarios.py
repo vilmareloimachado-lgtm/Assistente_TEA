@@ -91,7 +91,7 @@ def atualizar_usuario(nome: str, dados: AtualizacaoUsuario, usuario_logado: dict
 
 
 @router.delete("/{nome}")
-def excluir_usuario(nome: str, usuario_logado: dict = Depends(exigir_login)):
+def excluir_usuario(nome: str, usuario_logado: dict = Depends(exigir_tipo_usuario("cuidador"))):
     resposta = controller.excluir_perfil(nome)
 
     if not resposta["sucesso"]:
