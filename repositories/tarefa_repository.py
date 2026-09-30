@@ -120,3 +120,28 @@ class TarefaRepository:
     def buscar_passo_por_id(self, passo_id):
         with SessionLocal() as session:
             return session.get(Passo, passo_id)
+
+    def excluir_passo(self, passo_id):
+        # Apaga o passo e renumera os que sobraram da mesma tarefa (1, 2, 3...),
+        # tudo na mesma transacao: ou faz as duas coisas, ou nenhuma.
+        # Devolve True se apagou e False se o passo nao existe.
+        with SessionLocal() as session:
+            passo = session.get(Passo, passo_id)
+            if passo is None:
+                return False
+
+            tarefa = session.get(Tarefa, passo.tarefa_id)
+
+            # Os que ficam, na ordem atual (em caso de empate, o mais antigo primeiro).
+            restantes = sorted(
+                [p for p in tarefa.passos if p.id != passo_id],
+                key=lambda p: (p.ordem, p.id)
+            )
+
+            session.delete(passo)
+
+            for nova_ordem, restante in enumerate(restantes, start=1):
+                restante.ordem = nova_ordem
+
+            session.commit()
+            return True

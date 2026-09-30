@@ -97,6 +97,12 @@ class TarefaService:
             raise ValueError("Passo não encontrado.")
         return passo
 
+    def excluir_passo(self, passo_id):
+        excluido = self.repository.excluir_passo(passo_id)
+        if not excluido:
+            raise ValueError("Passo não encontrado.")
+        return True
+
     def resumo_tarefas(self, usuario_id):
         tarefas = self.repository.listar_por_usuario(usuario_id)
         total = len(tarefas)

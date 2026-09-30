@@ -65,6 +65,13 @@ class TarefaController:
         except ValueError as erro:
             return {"sucesso": False, "mensagem": str(erro)}
 
+    def excluir_passo(self, passo_id):
+        try:
+            self.service.excluir_passo(passo_id)
+            return {"sucesso": True, "mensagem": "Passo excluído com sucesso."}
+        except ValueError as erro:
+            return {"sucesso": False, "mensagem": str(erro)}
+
     def resumo_tarefas(self, usuario_id):
         return self.service.resumo_tarefas(usuario_id)
 
@@ -79,4 +86,3 @@ class TarefaController:
         "concluida": tarefa.concluida,
         "passos": [{"passo_id": p.id, "texto": p.texto, "concluido": p.concluido} for p in tarefa.passos]
     }
-    
