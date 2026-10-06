@@ -115,7 +115,7 @@ def exigir_dono_da_tarefa(
     payload: dict = Depends(exigir_login)
 ):
     try:
-        tarefa = tarefa_service.buscar_tarefa_por_id(tarefa_id)
+        tarefa = tarefa_service.buscar_tarefa(tarefa_id)
     except ValueError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -158,8 +158,8 @@ def exigir_dono_do_passo(
     payload: dict = Depends(exigir_login)
 ):
     try:
-        passo = tarefa_service.buscar_passo_por_id(passo_id)
-        tarefa = tarefa_service.buscar_tarefa_por_id(
+        passo = tarefa_service.buscar_passo(passo_id)
+        tarefa = tarefa_service.buscar_tarefa(
             passo.tarefa_id
         )
     except ValueError:

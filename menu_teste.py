@@ -592,6 +592,28 @@ def excluir_cuidador():
     print("\n" + resultado["mensagem"])
 
 
+def login_cuidador():
+    print("\n--- LOGIN DO CUIDADOR ---")
+
+    email = input("E-mail: ").strip()
+    senha = input("Senha: ").strip()
+
+    if email == "":
+        print("\nO e-mail não pode ficar vazio.")
+        return
+
+    if senha == "":
+        print("\nA senha não pode ficar vazia.")
+        return
+
+    resultado = controller.login(
+        email,
+        senha
+    )
+
+    print("\n" + resultado["mensagem"])
+
+
 def main():
     while True:
         print("\n" + "=" * 40)
@@ -611,6 +633,7 @@ def main():
         print("11 - Remover PIN do usuário TEA")
         print("12 - Excluir usuário TEA")
         print("13 - Excluir conta do cuidador")
+        print("14 - Login do cuidador")
         print("0 - Sair")
 
         opcao = input("\nEscolha: ").strip()
@@ -653,6 +676,9 @@ def main():
 
         elif opcao == "13":
             excluir_cuidador()
+
+        elif opcao == "14":
+            login_cuidador()
 
         elif opcao == "0":
             print("\nEncerrando menu de teste.")

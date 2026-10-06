@@ -2,7 +2,8 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import BaseModel
 
 from controllers.tarefa_controller import TarefaController
-from api.permissoes import exigir_login, exigir_tipo_usuario, exigir_mesmo_usuario, exigir_dono_da_tarefa
+from api.permissoes import exigir_mesmo_usuario, exigir_dono_da_tarefa
+
 
 router = APIRouter(
     prefix="/tarefas",
@@ -12,6 +13,9 @@ router = APIRouter(
 controller = TarefaController()
 
 
+# ------------------------------------------------------------
+# Modelos de entrada
+# ------------------------------------------------------------
 class NovaTarefa(BaseModel):
     titulo: str
     descricao: str = ""
@@ -19,19 +23,42 @@ class NovaTarefa(BaseModel):
     prioridade: str = "media"
     prazo: str = ""
 
+
 class NovosPassos(BaseModel):
     textos: list[str]
 
+
+class TarefaAtualizacao(BaseModel):
+    titulo: str | None = None
+    descricao: str | None = None
+    prioridade: str | None = None
+    prazo: str | None = None
+
+
+# ------------------------------------------------------------
+# Listar tarefas de um usuário
+# ------------------------------------------------------------
 @router.get("/{usuario_id}")
-def listar_tarefas(usuario_id: int, usuario_logado: dict = Depends(exigir_mesmo_usuario)):
+def listar_tarefas(
+    usuario_id: int,
+    usuario_logado: dict = Depends(exigir_mesmo_usuario)
+):
     tarefas = controller.listar_tarefas(usuario_id)
+
     return {
         "dados": tarefas
     }
 
 
+# ------------------------------------------------------------
+# Criar tarefa
+# ------------------------------------------------------------
 @router.post("/{usuario_id}", status_code=status.HTTP_201_CREATED)
-def criar_tarefa(usuario_id: int, dados: NovaTarefa, usuario_logado: dict = Depends(exigir_mesmo_usuario)):
+def criar_tarefa(
+    usuario_id: int,
+    dados: NovaTarefa,
+    usuario_logado: dict = Depends(exigir_mesmo_usuario)
+):
     resposta = controller.criar_tarefa(
         usuario_id,
         dados.tipo,
@@ -49,9 +76,21 @@ def criar_tarefa(usuario_id: int, dados: NovaTarefa, usuario_logado: dict = Depe
 
     return resposta
 
+
+# ------------------------------------------------------------
+# Definir passos da tarefa
+# ------------------------------------------------------------
 @router.post("/{tarefa_id}/passos", status_code=status.HTTP_201_CREATED)
-def definir_passos(tarefa_id: int, dados: NovosPassos, usuario_logado: dict = Depends(exigir_dono_da_tarefa)):
-    resposta = controller.definir_passos_ia(tarefa_id, dados.textos)
+def definir_passos(
+    tarefa_id: int,
+    dados: NovosPassos,
+    usuario_logado: dict = Depends(exigir_dono_da_tarefa)
+):
+    resposta = controller.definir_passos_ia(
+        tarefa_id,
+        dados.textos
+    )
+
     if not resposta["sucesso"]:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -60,20 +99,27 @@ def definir_passos(tarefa_id: int, dados: NovosPassos, usuario_logado: dict = De
 
     return resposta
 
+
+# ------------------------------------------------------------
+# Dashboard
+# ------------------------------------------------------------
 @router.get("/{usuario_id}/dashboard")
-def dashboard(usuario_id: int, usuario_logado: dict = Depends(exigir_mesmo_usuario)):
+def dashboard(
+    usuario_id: int,
+    usuario_logado: dict = Depends(exigir_mesmo_usuario)
+):
     return controller.resumo_tarefas(usuario_id)
 
 
-class TarefaAtualizacao(BaseModel):
-    titulo: str | None = None
-    descricao: str | None = None
-    prioridade: str | None = None
-    prazo: str | None = None
-
-
+# ------------------------------------------------------------
+# Editar tarefa
+# ------------------------------------------------------------
 @router.put("/{tarefa_id}")
-def editar_tarefa(tarefa_id: int, dados: TarefaAtualizacao, usuario_logado: dict = Depends(exigir_dono_da_tarefa)):
+def editar_tarefa(
+    tarefa_id: int,
+    dados: TarefaAtualizacao,
+    usuario_logado: dict = Depends(exigir_dono_da_tarefa)
+):
     resposta = controller.editar_tarefa(
         tarefa_id,
         dados.titulo,
@@ -91,8 +137,14 @@ def editar_tarefa(tarefa_id: int, dados: TarefaAtualizacao, usuario_logado: dict
     return resposta
 
 
+# ------------------------------------------------------------
+# Alterar status da tarefa
+# ------------------------------------------------------------
 @router.patch("/{tarefa_id}/status")
-def alternar_status_tarefa(tarefa_id: int, usuario_logado: dict = Depends(exigir_dono_da_tarefa)):
+def alternar_status_tarefa(
+    tarefa_id: int,
+    usuario_logado: dict = Depends(exigir_dono_da_tarefa)
+):
     resposta = controller.alternar_status_tarefa(tarefa_id)
 
     if not resposta["sucesso"]:
@@ -104,8 +156,14 @@ def alternar_status_tarefa(tarefa_id: int, usuario_logado: dict = Depends(exigir
     return resposta
 
 
+# ------------------------------------------------------------
+# Excluir tarefa
+# ------------------------------------------------------------
 @router.delete("/{tarefa_id}")
-def excluir_tarefa(tarefa_id: int, usuario_logado: dict = Depends(exigir_tipo_usuario("cuidador"))):
+def excluir_tarefa(
+    tarefa_id: int,
+    usuario_logado: dict = Depends(exigir_dono_da_tarefa)
+):
     resposta = controller.excluir_tarefa(tarefa_id)
 
     if not resposta["sucesso"]:
@@ -115,4 +173,3 @@ def excluir_tarefa(tarefa_id: int, usuario_logado: dict = Depends(exigir_tipo_us
         )
 
     return resposta
-
