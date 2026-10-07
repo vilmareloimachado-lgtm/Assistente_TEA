@@ -1,4 +1,5 @@
-from fastapi import HTTPException, status, Header, Depends
+from fastapi import HTTPException, status, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from config.auth import validar_token
 from services.tarefa_service import TarefaService
@@ -8,26 +9,28 @@ from repositories.usuario_repository import UsuarioRepository
 tarefa_service = TarefaService()
 usuario_repository = UsuarioRepository()
 
+security = HTTPBearer(auto_error=False)
+
 
 # ------------------------------------------------------------
 # Login
 # ------------------------------------------------------------
-def exigir_login(authorization: str = Header(None)):
-    if not authorization:
+def exigir_login(
+    credenciais: HTTPAuthorizationCredentials = Depends(security)
+):
+    if credenciais is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token não informado."
         )
 
-    partes = authorization.split()
-
-    if len(partes) != 2 or partes[0].lower() != "bearer":
+    if credenciais.scheme.lower() != "bearer":
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Formato do token inválido."
         )
 
-    token = partes[1]
+    token = credenciais.credentials
 
     try:
         return validar_token(token)
@@ -194,3 +197,66 @@ def exigir_dono_do_passo(
         status_code=status.HTTP_403_FORBIDDEN,
         detail="Você não tem permissão para realizar esta operação."
     )
+
+
+# ------------------------------------------------------------
+# Exclusão de uma tarefa
+# Somente cuidador vinculado ao usuário dono da tarefa.
+# ------------------------------------------------------------
+def exigir_cuidador_para_excluir_tarefa(
+    tarefa_id: int,
+    payload: dict = Depends(exigir_login)
+):
+    if payload.get("tipo_usuario") != "cuidador":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Somente o cuidador pode excluir tarefas."
+        )
+
+    try:
+        tarefa = tarefa_service.buscar_tarefa(tarefa_id)
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Tarefa não encontrada."
+        )
+
+    _exigir_vinculo_cuidador(
+        payload.get("usuario_id"),
+        tarefa.usuario_id
+    )
+
+    return payload
+
+
+# ------------------------------------------------------------
+# Exclusão de um passo
+# Somente cuidador vinculado ao usuário dono da tarefa.
+# ------------------------------------------------------------
+def exigir_cuidador_para_excluir_passo(
+    passo_id: int,
+    payload: dict = Depends(exigir_login)
+):
+    if payload.get("tipo_usuario") != "cuidador":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Somente o cuidador pode excluir passos."
+        )
+
+    try:
+        passo = tarefa_service.buscar_passo(passo_id)
+        tarefa = tarefa_service.buscar_tarefa(
+            passo.tarefa_id
+        )
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Passo não encontrado."
+        )
+
+    _exigir_vinculo_cuidador(
+        payload.get("usuario_id"),
+        tarefa.usuario_id
+    )
+
+    return payload

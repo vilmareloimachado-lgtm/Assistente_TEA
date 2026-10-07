@@ -2,7 +2,11 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import BaseModel
 
 from controllers.tarefa_controller import TarefaController
-from api.permissoes import exigir_mesmo_usuario, exigir_dono_da_tarefa
+from api.permissoes import (
+    exigir_mesmo_usuario,
+    exigir_dono_da_tarefa,
+    exigir_cuidador_para_excluir_tarefa
+)
 
 
 router = APIRouter(
@@ -162,7 +166,9 @@ def alternar_status_tarefa(
 @router.delete("/{tarefa_id}")
 def excluir_tarefa(
     tarefa_id: int,
-    usuario_logado: dict = Depends(exigir_dono_da_tarefa)
+    usuario_logado: dict = Depends(
+        exigir_cuidador_para_excluir_tarefa
+    )
 ):
     resposta = controller.excluir_tarefa(tarefa_id)
 

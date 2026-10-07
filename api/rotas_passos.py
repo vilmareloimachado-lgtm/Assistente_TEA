@@ -1,7 +1,10 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 
 from controllers.tarefa_controller import TarefaController
-from api.permissoes import exigir_dono_do_passo
+from api.permissoes import (
+    exigir_dono_do_passo,
+    exigir_cuidador_para_excluir_passo
+)
 
 
 router = APIRouter(
@@ -37,7 +40,9 @@ def alternar_status_passo(
 @router.delete("/{passo_id}")
 def excluir_passo(
     passo_id: int,
-    usuario_logado: dict = Depends(exigir_dono_do_passo)
+    usuario_logado: dict = Depends(
+        exigir_cuidador_para_excluir_passo
+    )
 ):
     resposta = controller.excluir_passo(passo_id)
 
