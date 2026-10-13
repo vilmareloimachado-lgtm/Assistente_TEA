@@ -270,6 +270,13 @@ class UsuarioService:
             raise ValueError("Apenas o cuidador principal pode fazer isso.")
         return vinculo
 
+    def eh_principal(self, cuidador_id, usuario_id):
+        # Responde True se este cuidador é o principal deste usuario TEA.
+        # Se não existir vínculo, responde False (não levanta erro),
+        # porque é só uma consulta para a API informar ao front-end.
+        vinculo = self.repository.buscar_vinculo(cuidador_id, usuario_id)
+        return vinculo is not None and bool(vinculo.principal)
+
     def adicionar_cuidador(self, cuidador_id, usuario_id, email_novo_cuidador):
         self._exigir_principal(cuidador_id, usuario_id)
 

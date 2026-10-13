@@ -113,19 +113,35 @@ class UsuarioController:
 
     def listar_usuarios_do_cuidador(self, cuidador_id):
         usuarios = self.service.listar_usuarios_do_cuidador(cuidador_id)
+
+        # Para cada perfil, acrescenta se o cuidador logado é o principal dele.
+        lista = []
+        for usuario in usuarios:
+            resumo = self._resumo_usuario(usuario)
+            resumo["principal"] = self.service.eh_principal(cuidador_id, usuario.id)
+            lista.append(resumo)
+
         return {
             "sucesso": True,
             "mensagem": f"{len(usuarios)} perfil(is) encontrado(s).",
-            "usuarios": [self._resumo_usuario(usuario) for usuario in usuarios]
+            "usuarios": lista
         }
 
     def listar_cuidadores_do_usuario(self, cuidador_id, usuario_id):
         try:
             cuidadores = self.service.listar_cuidadores_do_usuario(cuidador_id, usuario_id)
+
+            # Para cada cuidador, acrescenta se ele é o principal deste perfil.
+            lista = []
+            for cuidador in cuidadores:
+                resumo = self._resumo_usuario(cuidador)
+                resumo["principal"] = self.service.eh_principal(cuidador.id, usuario_id)
+                lista.append(resumo)
+
             return {
                 "sucesso": True,
                 "mensagem": f"{len(cuidadores)} cuidador(es) encontrado(s).",
-                "cuidadores": [self._resumo_usuario(c) for c in cuidadores]
+                "cuidadores": lista
             }
         except ValueError as erro:
             return self._falha(erro)
