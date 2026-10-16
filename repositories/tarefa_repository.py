@@ -106,6 +106,21 @@ class TarefaRepository:
             _ = tarefa.passos
             return tarefa
 
+    def adicionar_passo(self, tarefa_id, texto):
+        # Acrescenta UM passo no fim da lista, sem mexer nos passos que já existem.
+        with SessionLocal() as session:
+            tarefa = session.get(Tarefa, tarefa_id)
+            if tarefa is None:
+                return None
+
+            ultima_ordem = max((p.ordem for p in tarefa.passos), default=0)
+            session.add(Passo(tarefa_id=tarefa_id, texto=texto, concluido=False, ordem=ultima_ordem + 1))
+
+            session.commit()
+            session.refresh(tarefa)
+            _ = tarefa.passos
+            return tarefa
+
     def alternar_status_passo(self, passo_id):
         with SessionLocal() as session:
             passo = session.get(Passo, passo_id)

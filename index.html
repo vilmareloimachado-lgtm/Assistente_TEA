@@ -1,32 +1,58 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>doroTEA</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='24 20 80 80'%3E%3Cg stroke='%23fff' stroke-width='2.5' stroke-linejoin='round'%3E%0A    %3Cpath d='M26.00 22.00 L64.00 22.00 L64.00 35.93 A6.33 6.33 0 1 1 64.00 46.07 L64.00 60.00 L50.07 60.00 A6.33 6.33 0 1 0 39.93 60.00 L26.00 60.00 L26.00 22.00Z' fill='%231e88e5'/%3E%0A    %3Cpath d='M64.00 22.00 L102.00 22.00 L102.00 60.00 L88.07 60.00 A6.33 6.33 0 1 1 77.93 60.00 L64.00 60.00 L64.00 46.07 A6.33 6.33 0 1 0 64.00 35.93 L64.00 22.00Z' fill='%23e8453c'/%3E%0A    %3Cpath d='M26.00 60.00 L39.93 60.00 A6.33 6.33 0 1 1 50.07 60.00 L64.00 60.00 L64.00 73.93 A6.33 6.33 0 1 0 64.00 84.07 L64.00 98.00 L26.00 98.00 L26.00 60.00Z' fill='%23fbc02d'/%3E%0A    %3Cpath d='M64.00 60.00 L77.93 60.00 A6.33 6.33 0 1 0 88.07 60.00 L102.00 60.00 L102.00 98.00 L64.00 98.00 L64.00 84.07 A6.33 6.33 0 1 1 64.00 73.93 L64.00 60.00Z' fill='%2343a047'/%3E%0A  %3C/g%3E%3C/svg%3E">
 <style>
-:root{--bg:#e9eaee;--soft:#f5f8f7;--ink:#292d30;--pink:#f774b2;--pk:#fbe0ee;--mut:#6a7076;--ln:#e6e8ec;--sh:0 8px 22px rgba(30,30,60,.08),0 1px 3px rgba(30,30,60,.05)}
+:root{--bg:#dde1e7;--soft:#f2f4f7;--base:#e8ebf0;--inset:inset 3px 3px 7px rgba(163,177,198,.55),inset -3px -3px 7px rgba(255,255,255,.9);--ink:#292d30;--pink:#f774b2;--pk:#fbe0ee;--mut:#6a7076;--ln:#e6e8ec;--sh:6px 6px 14px rgba(163,177,198,.5),-4px -4px 11px rgba(255,255,255,.9)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 system-ui,"Segoe UI",Roboto,sans-serif;display:flex;justify-content:center}
-.phone{width:100%;max-width:430px;min-height:100vh;background:#fff;display:flex;flex-direction:column}
+.phone{width:100%;max-width:430px;min-height:100vh;background:var(--base);display:flex;flex-direction:column}
 #app{flex:1;display:flex;flex-direction:column}
-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 4px}header h1{font-size:16px;font-weight:600;margin:0}
+header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 4px}header h1{font-size:16px;font-weight:600;margin:0}.heading{flex:1;min-width:0;text-align:center;padding:0 6px}.heading .greeting{font-size:12px;font-weight:600;margin-bottom:3px}.heading .mode{font-size:11px;color:var(--mut);font-weight:400}.header-actions{display:flex;gap:8px;flex:none}
 .ib{width:34px;height:34px;border-radius:50%;border:0;background:var(--soft);box-shadow:var(--sh);display:grid;place-items:center;color:var(--ink);cursor:pointer;padding:0;flex:none}
 main{flex:1;padding:8px 16px 16px;display:flex;flex-direction:column;gap:10px}
 .card{background:var(--soft);border-radius:20px;padding:12px 14px;box-shadow:var(--sh)}
 .row{display:flex;align-items:center;gap:8px}.sp{justify-content:space-between}.grow{flex:1;min-width:0}.mut{color:var(--mut);font-size:12px}.big{font-size:20px}
-.btn{height:32px;padding:0 14px;border-radius:16px;border:1px solid var(--ln);background:#fff;color:var(--ink);font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px}
-.btn.pk{background:var(--pink);border-color:var(--pink);color:#fff}.btn.dk{background:var(--ink);border-color:var(--ink);color:#fff}.btn.ol{border-color:var(--pink);color:#c2468a}.btn.rd{color:#c2334d;border-color:#f0c4cc}.btn.sm{height:28px;font-size:12px;padding:0 11px}
+.btn{height:32px;padding:0 14px;border-radius:16px;border:0;background:var(--soft);box-shadow:var(--sh);color:var(--ink);font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn.pk{background:var(--pink);color:var(--ink)}.btn.dk{background:var(--ink);color:#fff}.btn.ol{box-shadow:inset 0 0 0 1.5px var(--pink),var(--sh);color:#a8336f}.btn.rd{box-shadow:inset 0 0 0 1.5px #f0c4cc,var(--sh);color:#b02a43}.btn.sm{height:28px;font-size:12px;padding:0 11px}
 .chip{font-size:11px;padding:1px 9px;border-radius:12px;background:#fff;border:1px solid var(--ln);color:var(--mut)}.chip.pk{background:var(--pk);border-color:var(--pk);color:#b0356f}.meta{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
-input,select{width:100%;height:38px;border:0;border-radius:14px;background:#eef0f2;padding:0 12px;font:inherit;color:var(--ink)}
+input,select{width:100%;height:38px;border:0;border-radius:14px;background:var(--base);box-shadow:var(--inset);padding:0 12px;font:inherit;color:var(--ink)}
 label{font-size:12px;color:var(--mut);display:block;margin:8px 2px 4px}
 :focus-visible{outline:2px solid var(--pink);outline-offset:2px}
 .av{width:38px;height:38px;border-radius:50%;background:var(--pk);color:#b0356f;display:grid;place-items:center;font-weight:700;flex:none}
-.ck{width:22px;height:22px;border-radius:50%;border:2px solid #cfd3d8;background:#fff;cursor:pointer;flex:none;padding:0;display:grid;place-items:center;color:#fff}.ck[aria-checked=true]{background:var(--pink);border-color:var(--pink)}
+.ck{width:22px;height:22px;border-radius:50%;border:2px solid #cfd3d8;background:var(--soft);cursor:pointer;flex:none;padding:0;display:grid;place-items:center;color:var(--ink)}.ck[aria-checked=true]{background:var(--pink);border-color:var(--pink)}
 .rs{text-decoration:line-through;color:var(--mut)}.bar{height:6px;background:#e4e6ea;border-radius:4px;overflow:hidden;margin-top:4px}.bar i{display:block;height:100%;background:var(--pink)}
-nav{position:sticky;bottom:0;display:flex;gap:8px;padding:10px 14px 14px;background:#fff}
+nav{position:sticky;bottom:0;display:flex;gap:8px;padding:10px 14px 14px;background:var(--base)}
 nav button{height:40px;width:40px;border-radius:20px;border:0;background:var(--soft);box-shadow:var(--sh);display:flex;align-items:center;justify-content:center;gap:6px;color:var(--mut);font:600 13px system-ui;cursor:pointer;padding:0}nav span{display:none}
-nav .on{flex:1;width:auto;background:var(--pink);color:#fff}nav .on span{display:inline}
+nav .on{flex:1;width:auto;background:var(--pk);color:#8f2a5c;box-shadow:var(--inset)}nav .on span{display:inline}
 .ov{position:fixed;inset:0;background:rgba(20,20,40,.35);display:flex;align-items:flex-end;justify-content:center;z-index:9}
-.sheet{width:100%;max-width:430px;background:#fff;border-radius:24px 24px 0 0;padding:18px 16px 22px;display:flex;flex-direction:column;gap:8px}.sheet .btn{justify-content:flex-start;height:38px}
-#aviso{position:fixed;top:10px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:8px 16px;border-radius:16px;font-size:13px;display:none;z-index:10;max-width:90%}#aviso.on{display:block}
-.msg{padding:8px 12px;border-radius:16px;max-width:85%;white-space:pre-wrap}.me{align-self:flex-end;background:var(--pink);color:#fff}.ia{align-self:flex-start;background:var(--soft);box-shadow:var(--sh)}
-</style></head><body><div class="phone"><div id="app"></div></div><div id="aviso" role="status" aria-live="polite"></div>
+.sheet{width:100%;max-width:430px;background:var(--soft);border-radius:24px 24px 0 0;padding:18px 16px 22px;display:flex;flex-direction:column;gap:8px}.sheet .btn{justify-content:flex-start;height:38px}
+#aviso{display:none;margin:8px 16px 0;padding:12px;border-radius:14px;background:#e3edf7;color:#23435e;gap:10px;align-items:flex-start;overflow-wrap:anywhere}#aviso.on{display:flex}#aviso.erro{background:#fbe5e8;color:#882039}#aviso .texto{flex:1;min-width:0}#aviso button{border:0;background:transparent;color:inherit;font:inherit;font-size:20px;line-height:1;cursor:pointer;padding:0 2px}
+.msg{padding:8px 12px;border-radius:16px;max-width:85%;white-space:pre-wrap}.me{align-self:flex-end;background:var(--pink);color:var(--ink)}.ia{align-self:flex-start;background:var(--soft);box-shadow:var(--sh)}
+.btn:disabled{opacity:.6;cursor:wait}.ia-progress{display:flex;align-items:center;gap:10px;margin-top:10px;padding:12px;border-radius:14px;background:var(--pk);color:#7a2854;font-size:13px}.spinner{width:18px;height:18px;border:2px solid #d9aac2;border-top-color:#8f2a5c;border-radius:50%;animation:girar 1s linear infinite;flex:none}@keyframes girar{to{transform:rotate(360deg)}}
+.grid{display:flex;flex-direction:column;gap:10px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* Mantém as cores de repouso e realça interação por mouse e teclado. */
+.btn,.ib,nav button{transition:background-color .15s ease,filter .15s ease}
+.btn:not(:disabled):is(:hover,:focus-visible){background:#dce1e8}
+.btn.pk:not(:disabled):is(:hover,:focus-visible){background:#ec60a2}
+.btn.dk:not(:disabled):is(:hover,:focus-visible){background:#454b50}
+.btn.ol:not(:disabled):is(:hover,:focus-visible){background:#f5d6e5}
+.btn.rd:not(:disabled):is(:hover,:focus-visible){background:#f4dce1}
+.btn:not(:disabled):active{filter:brightness(.92)}
+.ib:not(:disabled):is(:hover,:focus-visible),nav button:not(:disabled):is(:hover,:focus-visible){background:#dce1e8}
+nav button.on:is(:hover,:focus-visible){background:#f3c9dd}
+.ib:active,nav button:active{filter:brightness(.92)}
+.sheet-error{margin:0;color:#882039;font-size:13px}
+
+.dash-ring-row{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:10px}
+.dash-ring{width:150px;height:150px;flex:none}
+.dash-legend{display:grid;gap:10px;font-size:13px}
+.dash-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+.dash-label{display:flex;justify-content:space-between;gap:8px;margin:12px 0 6px;font-size:13px}
+.dash-track{height:12px;border-radius:10px;background:#dce1e8;overflow:hidden}
+.dash-fill{height:100%;border-radius:10px;background:var(--pink)}
+.dash-scale{display:flex;justify-content:space-between;gap:8px;color:var(--mut);font-size:11px;margin-top:8px}
+.dash-empty{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 0}
+</style></head><body><div class="phone"><div id="app"></div></div>
 <script>
 const LOGO = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="18 16 318 88" role="img" aria-label="doroTEA" style="width:min(280px,85%);height:auto;display:block;margin:0 auto"><g stroke="#fff" stroke-width="2.5" stroke-linejoin="round">
     <path d="M26.00 22.00 L64.00 22.00 L64.00 35.93 A6.33 6.33 0 1 1 64.00 46.07 L64.00 60.00 L50.07 60.00 A6.33 6.33 0 1 0 39.93 60.00 L26.00 60.00 L26.00 22.00Z" fill="#1e88e5"/>
@@ -43,22 +69,52 @@ const LOGO = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="18 16 318 88" rol
   <path d="M326.9378836238645 72.79597348391849Q327.5448072673705 74.06039774122269 327.59538423766264 74.94549472133562Q327.6459612079548 75.83059170144857 327.0643260495949 76.51338080039284Q326.48269089123494 77.1961698993371 325.1676896636386 77.85367051313528Q323.1446108519519 78.81463294868647 322.0319175055242 78.4353056714952Q320.9192241590965 78.05597839430395 319.9582617235453 76.03289958261723L317.02479744659956 69.91308617726492H303.1161306162534L300.1826663393076 76.03289958261723Q299.1711269334643 78.00540142401178 298.0837220721827 78.38472870120304Q296.99631721090105 78.7640559783943 294.9732383992143 77.80309354284311Q293.658237171618 77.1961698993371 293.076602013258 76.51338080039284Q292.4949668548981 75.83059170144857 292.5455438251903 74.89491775104347Q292.5961207954824 73.95924380063835 293.25362140928064 72.69481954333415L306.5553645961208 45.02921679351829Q307.06113429904246 44.01767738767493 308.04738521973974 43.410753744168915Q309.033636140437 42.8038301006629 310.09575251657253 42.8038301006629Q310.85440707095506 42.8038301006629 311.5119076847533 43.08200343726982Q312.16940829855145 43.360176773876745 312.70046648661923 43.86594647679843Q313.23152467468697 44.37171617972011 313.58556346673214 45.07979376381046ZM313.88902528848513 63.38865700957525 310.0451755462804 55.296341762828376 306.2013258040756 63.38865700957525Z" fill="#f774b2"/></svg>`;
 const API="http://127.0.0.1:8000",$=s=>document.querySelector(s),esc=t=>String(t??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])),pct=(a,b)=>b?Math.round(a/b*100):0,br=d=>d?d.split("-").reverse().join("/"):"",iso=d=>d?d.split("/").reverse().join("-"):"",v=id=>$("#"+id)?.value.trim()||"";
 const ld=k=>{try{return localStorage.getItem(k)}catch{return null}},sv=(k,x)=>{try{x==null?localStorage.removeItem(k):localStorage.setItem(k,x)}catch{}};
-const IC={back:'<path d="M15 5l-7 7 7 7"/>',menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',plus:'<path d="M12 5v14M5 12h14"/>',more:'<circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/>',edit:'<path d="M4 20h4l11-11-4-4L4 16z"/>',trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',home:'<path d="M4 11l8-7 8 7v9H4z"/>',list:'<path d="M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1"/>',chart:'<path d="M5 20V10M12 20V4M19 20v-7"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',spark:'<path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/>',chev:'<path d="M6 9l6 6 6-6"/>',ok:'<path d="M5 12l5 5 9-10"/>'};
+const IC={mic:'<rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/>',stop:'<rect x="6" y="6" width="12" height="12" rx="2"/>',logout:'<path d="M14 4h5v16h-5M15 12H3M7 8l-4 4 4 4"/>',back:'<path d="M15 5l-7 7 7 7"/>',menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',plus:'<path d="M12 5v14M5 12h14"/>',more:'<circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/>',edit:'<path d="M4 20h4l11-11-4-4L4 16z"/>',trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',home:'<path d="M4 11l8-7 8 7v9H4z"/>',list:'<path d="M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1"/>',chart:'<path d="M5 20V10M12 20V4M19 20v-7"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',spark:'<path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/>',chev:'<path d="M6 9l6 6 6-6"/>',ok:'<path d="M5 12l5 5 9-10"/>'};
 const ic=(n,s=18)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
-const S={token:ld("t"),tipo:ld("tp"),pid:+ld("u")||null,nome:ld("n")||"",email:ld("em")||"",view:"login",perfis:[],tarefas:[],dash:null,cuid:[],chat:[],ab:new Set(),sug:{},filtro:"todas",edit:null};
+const S={token:ld("t"),tipo:ld("tp"),pid:+ld("u")||null,nome:ld("n")||"",email:ld("em")||"",view:"login",perfis:[],tarefas:[],dash:null,cuid:[],chat:[],ab:new Set(),sug:{},processando:new Set(),filtro:"todas",edit:null};
 const PR={baixa:"Baixa",media:"Média",alta:"Alta"},mgr=()=>S.tipo==="cuidador",P=()=>S.perfis.find(p=>p.usuario_id===S.pid)||{};
-let tm;function aviso(t){if(!t)return;const a=$("#aviso");a.textContent=t;a.classList.add("on");clearTimeout(tm);tm=setTimeout(()=>a.classList.remove("on"),5000)}
+const mensagem={texto:"",tipo:"info"};
+function blocoAviso(){return `<div id="aviso" class="${mensagem.texto?"on":""} ${mensagem.tipo}" role="${mensagem.tipo==="erro"?"alert":"status"}" aria-live="polite">${mensagem.texto?`<span class="texto">${esc(mensagem.texto)}</span><button type="button" data-a="fecharaviso" aria-label="Fechar mensagem">×</button>`:""}</div>`}
+function atualizarAviso(){const a=$("#aviso");if(a)a.outerHTML=blocoAviso()}
+function aviso(t,tipo="info"){if(!t||(tipo!=="erro"&&mensagem.tipo==="erro"&&mensagem.texto))return;mensagem.texto=t;mensagem.tipo=tipo;atualizarAviso();$("#aviso")?.scrollIntoView({block:"nearest",behavior:"auto"})}
+function limparAviso(){mensagem.texto="";mensagem.tipo="info";atualizarAviso()}
+
 function guardar(){sv("t",S.token);sv("tp",S.tipo);sv("u",S.tipo==="usuario_tea"?S.pid:null);sv("n",S.nome);sv("em",S.email)}
-function sair(m){Object.assign(S,{token:null,tipo:null,pid:null,nome:"",perfis:[],tarefas:[],chat:[],view:"login"});guardar();render();aviso(m)}
-async function api(p,o={}){let r;try{r=await fetch(API+p,{method:o.m||"GET",headers:{"Content-Type":"application/json",...(S.token?{Authorization:"Bearer "+S.token}:{})},body:o.b?JSON.stringify(o.b):undefined})}catch{throw new Error("Não consegui falar com o servidor. A API está ligada?")}
+function sair(m){pararLeitura();Object.assign(S,{token:null,tipo:null,pid:null,nome:"",perfis:[],tarefas:[],chat:[],cuid:[],dash:null,ab:new Set(),sug:{},processando:new Set(),edit:null,filtro:"todas",view:"login"});guardar();render();aviso(m)}
+async function api(p,o={}){let r;const controle=new AbortController(),limite=setTimeout(()=>controle.abort(),o.timeout||30000);try{r=await fetch(API+p,{signal:controle.signal,method:o.m||"GET",headers:{"Content-Type":"application/json",...(S.token?{Authorization:"Bearer "+S.token}:{})},body:o.b?JSON.stringify(o.b):undefined})}catch(e){throw new Error(e.name==="AbortError"?"O servidor demorou para responder. Verifique se a API está ligada e tente novamente.":"Não consegui falar com o servidor. A API está ligada?")}finally{clearTimeout(limite)}
 let d=null;try{d=await r.json()}catch{}
-if(!r.ok){if(r.status===401&&S.token&&!p.startsWith("/auth")){sair("Sua sessão acabou. Entre de novo.");throw new Error("")}throw new Error(typeof d?.detail==="string"?d.detail:"Algo deu errado. Tente de novo.")}return d}
+if(!r.ok){if(r.status===401&&S.token&&!p.startsWith("/auth")){sair("Sua sessão acabou. Entre de novo.");throw new Error("")}{const er=new Error(typeof d?.detail==="string"?d.detail:"Algo deu errado. Tente de novo.");er.status=r.status;throw er}}return d}
 // janelinhas: pergunta (com ou sem campo) e lista de opções
-function ask({t,p="",ph="",ok="Confirmar",danger=0,inp=0}){return new Promise(res=>{const o=document.createElement("div");o.className="ov";o.innerHTML=`<div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(t)}"><b>${esc(t)}</b><span class="mut">${esc(p)}</span>${inp?`<input id="ai" type="password" placeholder="${esc(ph)}" autocomplete="off">`:""}<div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" id="an">Cancelar</button><button class="btn ${danger?"rd":"pk"}" id="ay">${ok}</button></div></div>`;document.body.append(o);const i=o.querySelector("#ai"),f=x=>{o.remove();res(x)};(i||o.querySelector("#an")).focus();o.querySelector("#an").onclick=()=>f(null);o.querySelector("#ay").onclick=()=>f(i?i.value:true);o.onclick=e=>{if(e.target===o)f(null)};i&&i.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();o.querySelector("#ay").click()}})})}
+function ask({t,p="",ph="",ok="Confirmar",danger=0,inp=0,ty="password",confirmar=null}){
+  return new Promise(res=>{
+    const o=document.createElement("div");o.className="ov";
+    o.innerHTML=`<div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(t)}"><b>${esc(t)}</b><span class="mut">${esc(p)}</span>${inp?`<input id="ai" type="${ty}" placeholder="${esc(ph)}" autocomplete="off">`:""}<p class="sheet-error" role="alert" hidden></p><div class="row" style="justify-content:flex-end;margin-top:6px"><button type="button" class="btn" id="an">Cancelar</button><button type="button" class="btn ${danger?"rd":"pk"}" id="ay">${ok}</button></div></div>`;
+    document.body.append(o);
+    const i=o.querySelector("#ai"),cancelar=o.querySelector("#an"),salvar=o.querySelector("#ay"),erro=o.querySelector('.sheet-error');
+    let ocupado=false;
+    const fechar=x=>{o.remove();res(x)};
+    (i||cancelar).focus();
+    cancelar.onclick=()=>{if(!ocupado)fechar(null)};
+    salvar.onclick=async()=>{
+      if(ocupado)return;
+      const valor=i?i.value:true;
+      if(!confirmar){fechar(valor);return}
+      ocupado=true;salvar.disabled=true;cancelar.disabled=true;
+      salvar.setAttribute('aria-busy','true');salvar.textContent='Salvando…';erro.hidden=true;
+      try{await confirmar(valor);fechar(valor)}
+      catch(e){erro.textContent=e.message||'Não foi possível salvar. Tente novamente.';erro.hidden=false}
+      finally{ocupado=false;salvar.disabled=false;cancelar.disabled=false;salvar.removeAttribute('aria-busy');salvar.textContent=ok;if(o.isConnected)salvar.focus()}
+    };
+    o.onclick=e=>{if(e.target===o&&!ocupado)fechar(null)};
+    i?.addEventListener("keydown",e=>{
+      if(e.key==="Enter"&&!e.isComposing){e.preventDefault();if(!e.repeat&&!ocupado)salvar.focus()}
+    });
+  });
+}
 function pick(t,its){return new Promise(res=>{const o=document.createElement("div");o.className="ov";o.innerHTML=`<div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(t)}"><b>${esc(t)}</b>${its.map(([l,k,d])=>`<button class="btn ${d?"rd":""}" data-k="${k}">${l}</button>`).join("")}</div>`;document.body.append(o);o.onclick=e=>{const b=e.target.closest("[data-k]");if(b||e.target===o){o.remove();res(b?b.dataset.k:null)}};o.querySelector("button").focus()})}
 // peças de tela
-const head=(t,back)=>`<header>${back?`<button class="ib" data-a="go" data-v="${back}" aria-label="Voltar">${ic("back")}</button>`:'<span class="ib" style="visibility:hidden"></span>'}<h1>${esc(t)}</h1><button class="ib" data-a="menu" aria-label="Menu">${ic("menu")}</button></header>`;
-function nav(){const it=[...(mgr()?[["perfis","home","Perfis"]]:[]),["tarefas","list","Tarefas"],["dash","chart","Resumo"],["chat","chat","Chat IA"]];return `<nav aria-label="Principal">${it.map(([k,i,l])=>`<button data-a="go" data-v="${k}" class="${S.view===k?"on":""}" aria-label="${l}"${S.view===k?' aria-current="page"':""}>${ic(i)}<span>${l}</span></button>`).join("")}</nav>`}
+const head=(t,back)=>`<header>${back?`<button class="ib" data-a="go" data-v="${back}" aria-label="Voltar à tela anterior" title="Voltar para ${back==='perfis'?'Meus perfis':'Tarefas'}">${ic("back")}</button>`:mgr()&&S.view==="perfis"?`<button class="ib" data-a="sair" aria-label="Sair e voltar ao login" title="Sair e voltar ao login">${ic("back")}</button>`:'<span class="ib" style="visibility:hidden"></span>'}<div class="heading">${mgr()?`<div class="greeting">Olá, ${esc(S.nome.trim().split(/\s+/)[0]||"cuidador")} <span class="mode">· Modo cuidador</span></div>`:""}<h1>${esc(t)}</h1></div><button class="ib" data-a="menu" aria-label="Menu" title="Abrir menu">${ic("menu")}</button></header>`;
+function nav(){const it=[...(mgr()?[["perfis","home","Perfis"]]:[]),["tarefas","list","Tarefas"],["dash","chart","Resumo"],["chat","chat","Chat IA"]];return `<nav aria-label="Principal">${it.map(([k,i,l])=>`<button data-a="go" data-v="${k}" class="${S.view===k?"on":""}" aria-label="${l}" title="Ir para ${l}"${S.view===k?' aria-current="page"':""}>${ic(i)}<span>${l}</span></button>`).join("")}</nav>`}
 const fld=(id,l,val="",ty="text",x="")=>`<label for="${id}">${l}</label><input id="${id}" type="${ty}" value="${esc(val)}" ${x}>`;
 const sel=(id,l,op,cur)=>`<label for="${id}">${l}</label><select id="${id}">${op.map(([k,n])=>`<option value="${k}"${k===cur?" selected":""}>${n}</option>`).join("")}</select>`;
 const bar=(n,a,b)=>`<div style="margin-top:8px"><div class="row sp"><span>${n}</span><span class="mut">${a}/${b}</span></div><div class="bar" role="progressbar" aria-label="${n}" aria-valuenow="${pct(a,b)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct(a,b)}%"></i></div></div>`;
@@ -66,45 +122,202 @@ const bar=(n,a,b)=>`<div style="margin-top:8px"><div class="row sp"><span>${n}</
 const V={
 login:()=>`<main style="justify-content:center" data-go="#bl"><div style="margin:10px 0">${LOGO}</div><div class="card">${fld("e","Email",S.email,"email",'autocomplete="username"')}${fld("s","Senha","","password",'autocomplete="current-password"')}<div class="row" style="margin-top:14px"><button id="bl" class="btn pk grow" data-a="login">Entrar</button></div></div><button class="btn" style="align-self:center;border:0;background:none;color:#c2468a" data-a="go" data-v="conta">Criar conta de cuidador</button></main>`,
 conta:()=>`<main data-nx><div style="margin:6px 0">${LOGO}</div><div class="card"><b>Criar conta de cuidador</b>${fld("nm","Seu nome")}${fld("e","Email","","email")}${fld("nc","Data de nascimento","","date")}${fld("s","Senha (mínimo 6)","","password",'autocomplete="new-password"')}<div class="row" style="margin-top:14px"><button class="btn grow" data-a="go" data-v="login">Voltar</button><button class="btn pk grow" data-a="criarconta">Criar conta</button></div></div></main>`,
-perfis:()=>head("Meus perfis")+`<main><button class="btn pk" style="align-self:flex-start" data-a="go" data-v="pform">${ic("plus",15)} Novo perfil</button>${S.perfis.map(p=>`<div class="card"><div class="row"><div class="av">${esc(p.nome[0]||"?").toUpperCase()}</div><div class="grow"><b>${esc(p.nome)}</b><div class="meta"><span class="chip pk">${p.principal?"Principal":"Cuidador"}</span><span class="chip">${esc(p.nivel_suporte)}</span>${p.tem_pin?'<span class="chip">PIN</span>':""}</div></div><button class="ib" data-a="pm" data-id="${p.usuario_id}" aria-label="Mais opções de ${esc(p.nome)}">${ic("more")}</button></div><div class="row" style="margin-top:10px"><button class="btn dk grow" data-a="abrir" data-id="${p.usuario_id}">Abrir tarefas</button><button class="btn ol grow" data-a="entrar" data-id="${p.usuario_id}">Entrar como ${esc(p.nome.split(" ")[0])}</button></div></div>`).join("")||'<p class="mut">Nenhum perfil ainda. Toque em "Novo perfil".</p>'}</main>`,
+perfis:()=>head("Meus perfis")+`<main><button class="btn pk" style="align-self:flex-start" data-a="go" data-v="pform">${ic("plus",15)} Novo perfil</button>${S.perfis.length?`<div class="grid">${S.perfis.map(p=>`<div class="card"><div class="row"><div class="av">${esc(p.nome[0]||"?").toUpperCase()}</div><div class="grow"><b>${esc(p.nome)}</b><div class="meta"><span class="chip pk">${p.principal?"Principal":"Apoio"}</span><span class="chip">${esc(p.nivel_suporte)}</span>${p.tem_pin?'<span class="chip">PIN</span>':""}</div></div><button class="ib" data-a="pm" data-id="${p.usuario_id}" aria-label="Mais opções de ${esc(p.nome)}">${ic("more")}</button></div><div class="row" style="margin-top:10px"><button class="btn dk grow" data-a="abrir" data-id="${p.usuario_id}">Abrir tarefas</button><button class="btn ol grow" data-a="entrar" data-id="${p.usuario_id}">Entrar como ${esc(p.nome.split(" ")[0])}</button></div></div>`).join("")}</div>`:'<div class="card"><b>Quer cadastrar um usuário TEA?</b><p class="mut">Toque em "Novo perfil".</p><p class="mut">Foi convidado a participar por um Cuidador/Responsável? Peça para ele adicionar o seu email como Apoio.</p></div>'}</main>`+nav(),
 pform:()=>{const p=S.edit,n=!p;return head(n?"Novo perfil":"Editar perfil","perfis")+`<main data-nx><div class="card">${fld("nm","Nome",p?.nome)}${fld("nc","Data de nascimento",iso(p?.data_nascimento),"date")}${sel("nv","Nível de suporte",["Leve","Moderado","Severo"].map(x=>[x,x]),p?.nivel_suporte||"Leve")}${sel("es","Estilo das instruções",[["direto","Direto"],["detalhado","Detalhado"]],p?.estilo_instrucao||"direto")}${n?fld("pn","PIN (opcional)","","password",'inputmode="numeric" autocomplete="off"'):""}<div class="row" style="margin-top:14px"><button class="btn grow" data-a="go" data-v="perfis">Cancelar</button><button class="btn pk grow" data-a="salvarperfil">Salvar</button></div></div></main>`},
-cuid:()=>{const p=P(),pr=p.principal;return head("Cuidadores de "+(p.nome||""),"perfis")+`<main data-go="#ba">${S.cuid.map(c=>`<div class="card"><div class="row"><div class="av">${esc(c.nome[0]||"?").toUpperCase()}</div><div class="grow"><b>${esc(c.nome)}</b><div class="mut">${esc(c.email||"")}</div>${c.principal?'<div class="meta"><span class="chip pk">Principal</span></div>':""}</div></div>${pr&&!c.principal?`<div class="row" style="margin-top:8px"><button class="btn sm grow" data-a="tornar" data-id="${c.usuario_id}">Tornar principal</button><button class="btn sm rd" data-a="remcuid" data-id="${c.usuario_id}">Remover</button></div>`:""}</div>`).join("")}${pr?`<div class="card"><b>Adicionar cuidador</b><span class="mut"> (precisa ter conta)</span>${fld("ce","Email do cuidador","","email")}<button id="ba" class="btn pk" style="margin-top:10px" data-a="addcuid">Adicionar</button></div>`:'<p class="mut">Só o cuidador principal pode adicionar ou remover cuidadores.</p>'}</main>`},
-tarefas:()=>{const t=S.tarefas,ok=t.filter(x=>x.concluida).length,vis=t.filter(x=>S.filtro==="todas"||x.tipo===S.filtro);return head(mgr()?P().nome||"Tarefas":"Olá, "+S.nome.split(" ")[0],mgr()?"perfis":"")+`<main><div class="card"><div class="row sp"><span>${ok} de ${t.length} concluídas</span><b>${pct(ok,t.length)}%</b></div><div class="bar"><i style="width:${pct(ok,t.length)}%"></i></div></div><div class="row" style="flex-wrap:wrap"><button class="btn pk sm" data-a="go" data-v="tform">${ic("plus",14)} Nova</button>${[["todas","Todas"],["tarefas_diarias","Diárias"],["tarefas_educacionais","Educacionais"]].map(([k,l])=>`<button class="btn sm ${S.filtro===k?"dk":""}" data-a="filtro" data-id="${k}">${l}</button>`).join("")}</div>${vis.map(card).join("")||'<p class="mut">Nenhuma tarefa aqui.</p>'}</main>`+nav()},
+cuid:()=>{const p=P(),pr=p.principal;return head("Cuidadores de "+(p.nome||""),"perfis")+`<main data-go="#ba">${S.cuid.map(c=>`<div class="card"><div class="row"><div class="av">${esc(c.nome[0]||"?").toUpperCase()}</div><div class="grow"><b>${esc(c.nome)}</b><div class="mut">${esc(c.email||"")}</div><div class="meta"><span class="chip pk">${c.principal?"Principal":"Apoio"}</span></div></div></div>${pr&&!c.principal?`<div class="row" style="margin-top:8px"><button class="btn sm grow" data-a="tornar" data-id="${c.usuario_id}">Tornar principal</button><button class="btn sm rd" data-a="remcuid" data-id="${c.usuario_id}">Remover</button></div>`:""}</div>`).join("")}${pr?`<div class="card"><b>Adicionar Apoio</b><span class="mut"> (a pessoa precisa ter conta de cuidador)</span>${fld("ce","Email do Apoio","","email")}<button id="ba" class="btn pk" style="margin-top:10px" data-a="addcuid">Adicionar</button></div>`:'<p class="mut">Só o cuidador principal pode adicionar ou remover Apoios.</p>'}</main>`},
+tarefas:()=>{const t=S.tarefas,ok=t.filter(x=>x.concluida).length,vis=t.filter(x=>S.filtro==="todas"||x.tipo===S.filtro);return head(mgr()?P().nome||"Tarefas":"Olá, "+S.nome.split(" ")[0],mgr()?"perfis":"")+`<main><div class="card"><div class="row sp"><span>${ok} de ${t.length} concluídas</span><b>${pct(ok,t.length)}%</b></div><div class="bar"><i style="width:${pct(ok,t.length)}%"></i></div></div><div class="row" style="flex-wrap:wrap"><button class="btn pk sm" data-a="go" data-v="tform">${ic("plus",14)} Nova</button>${[["todas","Todas"],["tarefas_diarias","Diárias"],["tarefas_educacionais","Educacionais"]].map(([k,l])=>`<button class="btn sm ${S.filtro===k?"dk":""}" data-a="filtro" data-id="${k}">${l}</button>`).join("")}</div>${vis.length?`<div class="grid">${vis.map(card).join("")}</div>`:'<p class="mut">Nenhuma tarefa aqui.</p>'}</main>`+nav()},
 tform:()=>{const t=S.edit;return head(t?"Editar tarefa":"Nova tarefa","tarefas")+`<main data-nx><div class="card">${fld("ti","Título",t?.titulo)}${fld("de","Descrição",t?.descricao)}${t?"":sel("tp","Tipo",[["tarefas_diarias","Diária"],["tarefas_educacionais","Educacional"]],"tarefas_diarias")}${sel("pr","Prioridade",[["baixa","Baixa"],["media","Média"],["alta","Alta"]],t?.prioridade||"media")}${fld("pz","Prazo (opcional)",iso(t?.prazo),"date")}<div class="row" style="margin-top:14px"><button class="btn grow" data-a="go" data-v="tarefas">Cancelar</button><button class="btn pk grow" data-a="salvartarefa">Salvar</button></div></div></main>`},
-dash:()=>{const d=S.dash,tp=d.por_tipo,pr=d.por_prioridade;return head("Resumo",mgr()?"perfis":"")+`<main><div class="card"><div class="row sp"><span>Tarefas concluídas</span><b class="big">${pct(d.concluidas,d.total)}%</b></div>${bar("Concluídas",d.concluidas,d.total)}</div><div class="row"><div class="card grow"><div class="mut">Pendentes</div><b class="big">${d.pendentes}</b></div><div class="card grow"><div class="mut">Atrasadas</div><b class="big">${d.vencidas}</b></div></div><div class="card"><b>Por tipo</b>${bar("Diárias",tp.tarefas_diarias.concluidas,tp.tarefas_diarias.total)}${bar("Educacionais",tp.tarefas_educacionais.concluidas,tp.tarefas_educacionais.total)}</div><div class="card"><b>Por prioridade</b>${["alta","media","baixa"].map(k=>bar(PR[k],pr[k].concluidas,pr[k].total)).join("")}</div><div class="card"><b>Passos</b>${bar("Passos feitos",d.passos.concluidos,d.passos.total)}</div></main>`+nav()},
+dash:()=>{
+  const d=S.dash,tp=d.por_tipo,pr=d.por_prioridade,total=d.total,concluidas=d.concluidas,percentual=pct(concluidas,total),circ=2*Math.PI*64;
+  const prioridadeMax=Math.max(1,...["alta","media","baixa"].map(k=>pr[k].total));
+  const barraTipo=(titulo,k)=>{const n=tp[k];return `<div class="dash-label"><span>${titulo}</span><span>${n.concluidas} de ${n.total}</span></div><div class="dash-track" role="img" aria-label="${titulo}: ${n.concluidas} de ${n.total} tarefas concluídas"><div class="dash-fill" style="width:${pct(n.concluidas,n.total)}%"></div></div>`};
+  return head("Resumo",mgr()?"perfis":"")+`<main>
+    <div class="card"><b>Conclusão das tarefas</b><div class="dash-ring-row">
+      <svg class="dash-ring" viewBox="0 0 160 160" role="img" aria-label="${concluidas} de ${total} tarefas concluídas, ${percentual} por cento">
+        <circle cx="80" cy="80" r="64" fill="none" stroke="#dce1e8" stroke-width="16"/>
+        <circle cx="80" cy="80" r="64" fill="none" stroke="var(--pink)" stroke-width="16" stroke-dasharray="${circ*(total?concluidas/total:0)} ${circ}" transform="rotate(-90 80 80)"/>
+        <text x="80" y="78" text-anchor="middle" fill="var(--ink)" style="font-size:28px;font-weight:600">${percentual}%</text>
+        <text x="80" y="99" text-anchor="middle" fill="var(--mut)" style="font-size:12px">concluídas</text>
+      </svg>
+      <div class="dash-legend"><span><i class="dash-dot" style="background:var(--pink)"></i>${concluidas} concluídas</span><span><i class="dash-dot" style="background:#dce1e8"></i>${d.pendentes} pendentes</span></div>
+    </div>${total?'':'<p class="dash-empty">Nenhuma tarefa cadastrada neste perfil.</p>'}</div>
+    <div class="row"><div class="card grow"><div class="mut">Pendentes</div><b class="big">${d.pendentes}</b></div><div class="card grow"><div class="mut">Atrasadas</div><b class="big">${d.vencidas}</b><div class="mut">das pendentes</div></div></div>
+    <div class="card"><b>Por tipo</b><div class="mut">Concluídas em relação ao total de cada tipo</div>${barraTipo("Diárias","tarefas_diarias")}${barraTipo("Educacionais","tarefas_educacionais")}<div class="dash-scale"><span>0%</span><span>50%</span><span>100%</span></div></div>
+    <div class="card"><b>Por prioridade</b><div class="mut">Quantidade de tarefas</div>${["alta","media","baixa"].map(k=>`<div class="dash-label"><span>${PR[k]}</span><span>${pr[k].total} tarefa(s)</span></div><div class="dash-track" role="img" aria-label="Prioridade ${PR[k]}: ${pr[k].total} tarefas, ${pr[k].concluidas} concluídas"><div class="dash-fill" style="width:${100*pr[k].total/prioridadeMax}%;background:${k==='alta'?'#cf8b56':k==='media'?'var(--pink)':'#7f8995'}"></div></div><div class="mut" style="margin-top:4px">${pr[k].concluidas} concluída(s)</div>`).join("")}<div class="dash-scale"><span>0</span><span>Quantidade de tarefas</span><span>${total?prioridadeMax:0}</span></div></div>
+    <div class="card"><b>Passos</b>${bar("Passos feitos",d.passos.concluidos,d.passos.total)}</div>
+    </main>`+nav()
+},
 chat:()=>head("Chat com a IA",mgr()?"perfis":"")+`<main data-go="#bc" style="padding-bottom:4px">${S.chat.map(m=>`<div class="msg ${m.r}">${esc(m.t)}</div>`).join("")||'<p class="mut">Pergunte o que quiser.</p>'}</main><div class="row" style="padding:0 14px"><input id="q" placeholder="Escreva aqui" aria-label="Pergunta"><button id="bc" class="btn pk" data-a="enviar">Enviar</button></div>`+nav()
 };
-function card(t){const id=t.tarefa_id,ab=S.ab.has(String(id)),f=t.passos.filter(p=>p.concluido).length,s=S.sug[id];return `<article class="card"><div class="row"><button class="ck" role="checkbox" aria-checked="${t.concluida}" data-a="tt" data-id="${id}" aria-label="Concluir ${esc(t.titulo)}">${t.concluida?ic("ok",13):""}</button><div class="grow"><b class="${t.concluida?"rs":""}">${esc(t.titulo)}</b><div class="meta"><span class="chip pk">${PR[t.prioridade]}</span>${t.prazo?`<span class="chip">até ${esc(t.prazo)}</span>`:""}${t.passos.length?`<span class="chip">${f}/${t.passos.length} passos</span>`:""}</div></div><button class="ib" data-a="abrirt" data-id="${id}" aria-expanded="${ab}" aria-label="Passos">${ic("chev")}</button></div>${ab?`<div style="margin-top:8px;display:flex;flex-direction:column;gap:6px">${t.descricao?`<span class="mut">${esc(t.descricao)}</span>`:""}${t.passos.map(p=>`<div class="row"><button class="ck" role="checkbox" aria-checked="${p.concluido}" data-a="tp" data-id="${p.passo_id}">${p.concluido?ic("ok",13):""}</button><span class="grow ${p.concluido?"rs":""}">${esc(p.texto)}</span>${mgr()?`<button class="ib" style="width:28px;height:28px" data-a="delp" data-id="${p.passo_id}" aria-label="Excluir passo">${ic("trash",14)}</button>`:""}</div>`).join("")}${s?`<div class="card" style="background:#fff"><b>Sugestão da IA</b>${s.map((x,i)=>`<div>${i+1}. ${esc(x)}</div>`).join("")}<div class="row" style="margin-top:8px"><button class="btn pk sm" data-a="usar" data-id="${id}">Usar estes</button><button class="btn sm" data-a="sugerir" data-id="${id}">Outra</button></div></div>`:""}<div class="row"><button class="btn sm" data-a="sugerir" data-id="${id}">${ic("spark",14)} Dividir com IA</button><button class="btn sm" data-a="edt" data-id="${id}">${ic("edit",14)} Editar</button>${mgr()?`<button class="btn sm rd" data-a="delt" data-id="${id}">${ic("trash",14)} Excluir</button>`:""}</div></div>`:""}</article>`}
-function render(){$("#app").innerHTML=V[S.view]();const f=$("#app input");if(f&&["login","conta"].includes(S.view))f.focus()}
-async function go(k,x){try{if(k==="perfis")S.perfis=(await api("/usuarios")).usuarios;if(k==="tarefas"){const r=await api("/tarefas/"+S.pid);S.tarefas=r.tarefas||r}if(k==="dash")S.dash=await api(`/tarefas/${S.pid}/dashboard`);if(k==="cuid")S.cuid=(await api(`/usuarios/${S.pid}/cuidadores`)).cuidadores}catch(e){return aviso(e.message)}S.view=k;S.edit=x||null;render();scrollTo(0,0)}
-const tarefa=id=>S.tarefas.find(t=>t.tarefa_id==id),run=async f=>{try{await f()}catch(e){aviso(e.message)}};
-const entrada=d=>{Object.assign(S,{token:d.token,tipo:d.tipo_usuario,nome:d.nome,pid:d.tipo_usuario==="usuario_tea"?d.usuario_id:null});guardar()};
+function card(t){
+  const id=t.tarefa_id,ab=S.ab.has(String(id)),f=t.passos.filter(p=>p.concluido).length,busy=S.processando.has(String(id)),s=busy?null:S.sug[id];
+  return `<article class="card">
+    <div class="row"><button class="ib" type="button" data-a="ouvir" data-id="${id}" aria-label="Ouvir tarefa ${esc(t.titulo)}" title="Ouvir tarefa" aria-pressed="false">${ic("mic")}</button><button class="ck" role="checkbox" aria-checked="${t.concluida}" data-a="tt" data-id="${id}" aria-label="Concluir ${esc(t.titulo)}">${t.concluida?ic("ok",13):""}</button><div class="grow"><b class="${t.concluida?"rs":""}">${esc(t.titulo)}</b><div class="meta"><span class="chip pk">${PR[t.prioridade]}</span>${t.prazo?`<span class="chip">até ${esc(t.prazo)}</span>`:""}${t.passos.length?`<span class="chip">${f}/${t.passos.length} passos</span>`:""}</div></div><button class="ib" data-a="abrirt" data-id="${id}" aria-expanded="${ab}" aria-label="${ab?'Ocultar passos':'Mostrar passos'}" title="${ab?'Ocultar passos da tarefa':'Mostrar passos da tarefa'}">${ic("chev")}</button></div>
+    ${t.descricao?`<div class="mut" style="margin-top:8px">${esc(t.descricao)}</div>`:""}
+    ${busy?'<div class="ia-progress" role="status" aria-live="polite"><span class="spinner" aria-hidden="true"></span><span>A IA está preparando os passos… Aguarde.</span></div>':""}
+    ${ab?`<div style="margin-top:8px;display:flex;flex-direction:column;gap:6px">${t.passos.map(p=>`<div class="row"><button class="ib" type="button" data-a="ouvirpasso" data-id="${p.passo_id}" aria-label="Ouvir passo: ${esc(p.texto)}" title="Ouvir passo" aria-pressed="false">${ic("mic")}</button><button class="ck" role="checkbox" aria-checked="${p.concluido}" data-a="tp" data-id="${p.passo_id}">${p.concluido?ic("ok",13):""}</button><span class="grow ${p.concluido?"rs":""}">${esc(p.texto)}</span>${mgr()?`<button class="ib" style="width:28px;height:28px" data-a="delp" data-id="${p.passo_id}" aria-label="Excluir passo">${ic("trash",14)}</button>`:""}</div>`).join("")}
+      ${s?`<div class="card" style="background:#fff"><b>Sugestão da IA</b>${s.map((x,i)=>`<div>${i+1}. ${esc(x)}</div>`).join("")}<div class="row" style="margin-top:8px;flex-wrap:wrap"><button class="btn pk sm" data-a="usar" data-id="${id}">Usar estes</button><button class="btn sm" data-a="sugerir" data-id="${id}">Outra</button><button class="btn sm" data-a="cancelarsug" data-id="${id}">Cancelar</button></div></div>`:""}
+      <div class="row" style="flex-wrap:wrap"><button class="btn sm" data-a="addp" data-id="${id}">${ic("plus",14)} Adicionar passo</button><button class="btn sm" data-a="sugerir" data-id="${id}" ${busy?'disabled aria-busy="true"':""}>${ic("spark",14)} ${busy?"Gerando…":"Dividir com IA"}</button><button class="btn sm" data-a="edt" data-id="${id}">${ic("edit",14)} Editar</button>${mgr()?`<button class="btn sm rd" data-a="delt" data-id="${id}">${ic("trash",14)} Excluir</button>`:""}</div>
+    </div>`:""}
+  </article>`;
+}
+function render(){
+  // A tela acompanha o tipo da sessão, inclusive após trocar de perfil.
+  if(!S.token&&!['login','conta'].includes(S.view))S.view='login';
+  if(S.token&&S.tipo==='usuario_tea'&&['login','conta','perfis','pform','cuid'].includes(S.view))S.view='tarefas';
+  if(S.token&&S.tipo==='cuidador'&&['login','conta'].includes(S.view))S.view='perfis';
+  const html=V[S.view]();
+  $('#app').innerHTML=html.includes('</header>')?html.replace('</header>','</header>'+blocoAviso()):blocoAviso()+html;
+  atualizarBotoesLeitura();
+  const f=$('#app input');if(f&&['login','conta'].includes(S.view))f.focus();
+}
+async function go(k,x,perfilEscolhido=false){
+  pararLeitura();
+  const anterior=S.view,editAnterior=S.edit,tokenAnterior=S.token;
+  limparAviso();
+  try{
+    if(!perfilEscolhido&&mgr()&&S.view==='perfis'&&['tarefas','dash','chat','tform'].includes(k)){
+      if(!S.perfis.length)throw new Error('Cadastre um perfil em Novo perfil para acessar esta opção.');
+      const escolhido=S.perfis.length===1?String(S.perfis[0].usuario_id):await pick('Escolha o perfil',S.perfis.map(p=>[esc(p.nome),String(p.usuario_id)]));
+      if(escolhido===null)return false;
+      const novoId=Number(escolhido);
+      if(S.pid!==novoId){S.chat=[];S.tarefas=[];S.dash=null;S.ab=new Set();S.sug={};S.processando=new Set()}
+      S.pid=novoId;
+    }
+    if(S.tipo==='usuario_tea'&&['perfis','pform','cuid'].includes(k))throw new Error('Esta opção é exclusiva do cuidador. Use o menu para voltar ao modo cuidador.');
+    if(k==='perfis')S.perfis=(await api('/usuarios')).usuarios;
+    if(k==='tarefas'){
+      const r=await api('/tarefas/'+S.pid);
+      if(!Array.isArray(r.dados))throw new Error('O servidor retornou uma lista de tarefas em formato inesperado.');
+      S.tarefas=r.dados;
+    }
+    if(k==='dash')S.dash=await api(`/tarefas/${S.pid}/dashboard`);
+    if(k==='cuid')S.cuid=(await api(`/usuarios/${S.pid}/cuidadores`)).cuidadores;
+    S.view=k;S.edit=x||null;render();scrollTo(0,0);
+  }catch(e){
+    // Uma falha de rede não deve apagar os campos que a pessoa preencheu.
+    if(S.token===tokenAnterior&&S.view!==anterior){S.view=anterior;S.edit=editAnterior;render()}
+    aviso(e.message,'erro');return false;
+  }
+  return true;
+}
+
+const tarefa=id=>S.tarefas.find(t=>t.tarefa_id==id),run=async f=>{limparAviso();try{await f()}catch(e){aviso(e.message,"erro")}};
+const entrada=d=>{
+  pararLeitura();
+  Object.assign(S,{token:d.token,tipo:d.tipo_usuario,nome:d.nome,pid:d.tipo_usuario==="usuario_tea"?d.usuario_id:null,view:d.tipo_usuario==="usuario_tea"?"tarefas":"perfis",perfis:[],tarefas:[],cuid:[],dash:null,chat:[],ab:new Set(),sug:{},processando:new Set(),edit:null});
+  S.filtro="todas";guardar();limparAviso();render();
+};
+// Leitura em voz alta: utiliza a voz do aparelho e não solicita acesso ao microfone.
+const leitura={id:null,fala:null};
+function atualizarBotoesLeitura(){
+  document.querySelectorAll('[data-a="ouvir"],[data-a="ouvirpasso"]').forEach(b=>{
+    const passo=b.dataset.a==='ouvirpasso',chave=(passo?'passo:':'tarefa:')+b.dataset.id;
+    const ativo=leitura.id===chave;
+    b.setAttribute('aria-pressed',String(ativo));
+    b.setAttribute('aria-label',ativo?'Parar leitura':passo?'Ouvir passo':'Ouvir texto da tarefa');
+    b.title=ativo?'Parar leitura':passo?'Ouvir passo':'Ouvir tarefa';b.innerHTML=ic(ativo?'stop':'mic');
+  });
+}
+function pararLeitura(){
+  const tinhaFala=leitura.fala!==null;leitura.id=null;leitura.fala=null;
+  if(tinhaFala&&'speechSynthesis' in window)window.speechSynthesis.cancel();
+  atualizarBotoesLeitura();
+}
+function ouvirDescricao(id){
+  const t=tarefa(id);ouvirTexto('tarefa:'+id,(t?.descricao||t?.titulo||'').trim());
+}
+function ouvirPasso(id){
+  const p=S.tarefas.flatMap(t=>t.passos).find(p=>p.passo_id==id);
+  ouvirTexto('passo:'+id,(p?.texto||'').trim());
+}
+function ouvirTexto(chave,texto){
+  if(!S.token)return;
+  if(!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window)){aviso('Este navegador não oferece leitura em voz alta. Tente abrir no Chrome ou Edge.','erro');return}
+  if(leitura.id===chave){pararLeitura();return}
+  if(!texto){aviso('Não há texto para ouvir.');return}
+  pararLeitura();limparAviso();
+  const fala=new window.SpeechSynthesisUtterance(texto),sintese=window.speechSynthesis;
+  const vozes=sintese.getVoices(),idioma=v=>v.lang.toLowerCase().replace('_','-');
+  const voz=vozes.find(v=>idioma(v)==='pt-br')||vozes.find(v=>idioma(v).startsWith('pt'));
+  fala.lang='pt-BR';if(voz)fala.voice=voz;fala.rate=.9;fala.pitch=1;fala.volume=1;
+  leitura.id=chave;leitura.fala=fala;atualizarBotoesLeitura();
+  fala.onend=()=>{if(leitura.fala===fala){leitura.id=null;leitura.fala=null;atualizarBotoesLeitura()}};
+  fala.onerror=e=>{if(leitura.fala!==fala)return;leitura.id=null;leitura.fala=null;atualizarBotoesLeitura();if(!['canceled','interrupted'].includes(e.error))aviso('Não foi possível reproduzir a voz. Verifique as vozes em português e o áudio do aparelho.','erro')};
+  try{sintese.speak(fala)}catch{pararLeitura();aviso('Não foi possível iniciar a leitura neste navegador.','erro')}
+}
+
 const A={
+ouvir:d=>ouvirDescricao(d.id),
+ouvirpasso:d=>ouvirPasso(d.id),
+fecharaviso:()=>limparAviso(),
+sair:()=>{limparAviso();sair()},
 go:d=>go(d.v),filtro:d=>{S.filtro=d.id;render()},
 login:()=>run(async()=>{const d=await api("/auth/login",{m:"POST",b:{email:v("e"),senha:v("s")}});S.email=v("e");entrada(d);go(S.tipo==="cuidador"?"perfis":"tarefas")}),
 criarconta:()=>run(async()=>{await api("/usuarios/conta",{m:"POST",b:{nome:v("nm"),email:v("e"),senha:v("s"),data_nascimento:br(v("nc"))}});S.email=v("e");S.view="login";render();aviso("Conta criada! Agora é só entrar.")}),
-menu:async()=>{const m=mgr(),k=await pick("Menu",m?[["Meus perfis","perfis"],["Excluir minha conta","conta",1],["Sair","sair"]]:[["Voltar ao modo cuidador","volta"],["Sair do aplicativo","sair"]]);if(k==="perfis")go("perfis");if(k==="sair")sair();if(k==="volta")A.volta();if(k==="conta")run(async()=>{const s=await ask({t:"Excluir sua conta?",p:"Digite sua senha. Isso não pode ser desfeito.",ph:"Senha",ok:"Excluir",danger:1,inp:1});if(!s)return;await api("/usuarios/conta",{m:"DELETE",b:{senha:s}});sair("Conta excluída.")})},
+menu:async()=>{const m=mgr(),k=await pick("Menu",m?[["Meus perfis","perfis"],["Excluir minha conta","conta",1],["Sair","sair"]]:[["Voltar ao modo cuidador","volta"],["Sair deste aparelho","desparear"]]);if(k==="perfis")go("perfis");if(k==="sair")sair();if(k==="volta")A.volta();if(k==="desparear")A.desparear();if(k==="conta")run(async()=>{const s=await ask({t:"Excluir sua conta?",p:"Digite sua senha. Isso não pode ser desfeito.",ph:"Senha",ok:"Excluir",danger:1,inp:1});if(!s)return;await api("/usuarios/conta",{m:"DELETE",b:{senha:s}});sair("Conta excluída.")})},
 volta:()=>run(async()=>{const s=await ask({t:"Voltar ao modo cuidador",p:"Digite a senha do cuidador.",ph:"Senha",inp:1});if(!s)return;entrada(await api("/auth/login",{m:"POST",b:{email:S.email,senha:s}}));S.chat=[];go("perfis")}),
-abrir:d=>{S.pid=+d.id;S.chat=[];go("tarefas")},
+desparear:()=>run(async()=>{const s=await ask({t:"Sair deste aparelho",p:"Digite a senha do cuidador. Depois disso, só o cuidador consegue entrar de novo aqui.",ph:"Senha",ok:"Sair",danger:1,inp:1});if(!s)return;await api("/auth/login",{m:"POST",b:{email:S.email,senha:s}});sair("Aparelho desconectado.")}),
+addp:d=>run(async()=>{const x=await ask({t:"Novo passo",p:"Escreva o que precisa ser feito neste passo.",ph:"Ex.: Guardar os cadernos",ok:"Salvar",inp:1,ty:"text",confirmar:async valor=>{const texto=valor.trim();if(!texto)throw new Error("Escreva o texto do passo antes de salvar.");if(texto.length>200)throw new Error("O passo pode ter no máximo 200 caracteres.");await api(`/tarefas/${d.id}/passos/novo`,{m:"POST",b:{texto}})}});if(x===null)return;await go("tarefas");aviso("Passo adicionado.")}),
+abrir:d=>{if(S.pid!==+d.id){S.pid=+d.id;S.chat=[];S.tarefas=[];S.dash=null;S.ab=new Set();S.sug={};S.processando=new Set();S.filtro="todas"}return go("tarefas",null,true)},
 entrar:d=>run(async()=>{const p=S.perfis.find(x=>x.usuario_id==d.id);let pin=null;if(p.tem_pin){pin=await ask({t:"PIN de "+p.nome,ph:"PIN",ok:"Entrar",inp:1});if(!pin)return}entrada(await api("/auth/entrar-perfil",{m:"POST",b:{usuario_id:+d.id,pin}}));S.pid=+d.id;S.chat=[];guardar();go("tarefas")}),
 pm:async d=>{S.pid=+d.id;const p=P(),k=await pick(p.nome,[["Editar perfil","ed"],[p.tem_pin?"Trocar PIN":"Definir PIN","pin"],...(p.tem_pin?[["Remover PIN","rpin"]]:[]),["Cuidadores","cu"],...(p.principal?[["Excluir perfil","del",1]]:[])]);if(k==="ed")go("pform",p);if(k==="cu")go("cuid");if(k==="pin")run(async()=>{const n=await ask({t:"PIN de "+p.nome,ph:"Novo PIN",inp:1});if(!n)return;await api(`/usuarios/${p.usuario_id}/pin`,{m:"PUT",b:{pin:n}});go("perfis");aviso("PIN salvo.")});if(k==="rpin")run(async()=>{await api(`/usuarios/${p.usuario_id}/pin`,{m:"DELETE"});go("perfis");aviso("PIN removido.")});if(k==="del")run(async()=>{if(!await ask({t:"Excluir o perfil de "+p.nome+"?",p:"Apaga também as tarefas e passos. Não dá para desfazer.",ok:"Excluir",danger:1}))return;await api("/usuarios/"+p.usuario_id,{m:"DELETE"});go("perfis");aviso("Perfil excluído.")})},
 salvarperfil:()=>run(async()=>{const e=S.edit,b={nome:v("nm"),estilo_instrucao:v("es"),nivel_suporte:v("nv"),data_nascimento:br(v("nc"))};if(e)await api("/usuarios/"+e.usuario_id,{m:"PUT",b});else await api("/usuarios",{m:"POST",b:{...b,pin:v("pn")||null}});await go("perfis");aviso("Perfil salvo.")}),
-addcuid:()=>run(async()=>{const em=v("ce");if(!em)return aviso("Digite o email.");if(!await ask({t:"Dar acesso?",p:`${em} vai ver os dados de ${P().nome}.`,ok:"Adicionar"}))return;await api(`/usuarios/${S.pid}/cuidadores`,{m:"POST",b:{email:em}});await go("cuid");aviso("Cuidador adicionado.")}),
-remcuid:d=>run(async()=>{if(!await ask({t:"Remover este cuidador?",ok:"Remover",danger:1}))return;await api(`/usuarios/${S.pid}/cuidadores/${d.id}`,{m:"DELETE"});go("cuid")}),
-tornar:d=>run(async()=>{if(!await ask({t:"Passar o papel de principal?",p:"Você passa a ser cuidador comum neste perfil.",ok:"Passar"}))return;await api(`/usuarios/${S.pid}/cuidador-principal`,{m:"PUT",b:{novo_principal_id:+d.id}});S.perfis=(await api("/usuarios")).usuarios;go("cuid")}),
+addcuid:()=>run(async()=>{const em=v("ce");if(!em)return aviso("Digite o email.");if(!await ask({t:"Dar acesso?",p:`${em} vai ver os dados de ${P().nome}.`,ok:"Adicionar"}))return;await api(`/usuarios/${S.pid}/cuidadores`,{m:"POST",b:{email:em}});await go("cuid");aviso("Apoio adicionado.")}),
+remcuid:d=>run(async()=>{if(!await ask({t:"Remover este Apoio?",ok:"Remover",danger:1}))return;await api(`/usuarios/${S.pid}/cuidadores/${d.id}`,{m:"DELETE"});go("cuid")}),
+tornar:d=>run(async()=>{if(!await ask({t:"Passar o papel de principal?",p:"Você passa a ser Apoio neste perfil.",ok:"Passar"}))return;await api(`/usuarios/${S.pid}/cuidador-principal`,{m:"PUT",b:{novo_principal_id:+d.id}});S.perfis=(await api("/usuarios")).usuarios;go("cuid")}),
 abrirt:d=>{S.ab.has(d.id)?S.ab.delete(d.id):S.ab.add(d.id);render()},
 tt:d=>run(async()=>{await api(`/tarefas/${d.id}/status`,{m:"PATCH"});go("tarefas")}),
 tp:d=>run(async()=>{await api(`/passos/${d.id}/status`,{m:"PATCH"});go("tarefas")}),
 delp:d=>run(async()=>{if(!await ask({t:"Excluir este passo?",ok:"Excluir",danger:1}))return;await api("/passos/"+d.id,{m:"DELETE"});go("tarefas")}),
 delt:d=>run(async()=>{if(!await ask({t:"Excluir esta tarefa?",ok:"Excluir",danger:1}))return;await api("/tarefas/"+d.id,{m:"DELETE"});go("tarefas")}),
 edt:d=>go("tform",tarefa(d.id)),
-salvartarefa:()=>run(async()=>{const e=S.edit;if(e)await api("/tarefas/"+e.tarefa_id,{m:"PUT",b:{titulo:v("ti"),descricao:v("de"),prioridade:v("pr"),prazo:br(v("pz"))}});else await api("/tarefas/"+S.pid,{m:"POST",b:{titulo:v("ti"),descricao:v("de"),tipo:v("tp"),prioridade:v("pr"),prazo:br(v("pz"))}});await go("tarefas");aviso("Tarefa salva.")}),
-sugerir:d=>run(async()=>{aviso("Pensando…");S.sug[d.id]=(await api(`/ia/tarefas/${d.id}/sugerir-passos`,{m:"POST"})).passos;render()}),
-usar:d=>run(async()=>{await api(`/tarefas/${d.id}/passos`,{m:"POST",b:{textos:S.sug[d.id]}});delete S.sug[d.id];go("tarefas")}),
-enviar:()=>run(async()=>{const q=v("q");if(!q)return;S.chat.push({r:"me",t:q});render();const r=(await api(`/ia/${S.pid}/chat`,{m:"POST",b:{pergunta:q}})).respostas;S.chat.push({r:"ia",t:Array.isArray(r)?r.join("\n"):r});render();$("#q")?.focus()})
+salvartarefa:()=>run(async()=>{const e=S.edit;if(e)await api("/tarefas/"+e.tarefa_id,{m:"PUT",b:{titulo:v("ti"),descricao:v("de"),prioridade:v("pr"),prazo:br(v("pz"))}});else await api("/tarefas/"+S.pid,{m:"POST",b:{titulo:v("ti"),descricao:v("de"),tipo:v("tp"),prioridade:v("pr"),prazo:br(v("pz"))}});if(!e)S.filtro="todas";await go("tarefas");aviso("Tarefa salva.")}),
+cancelarsug:d=>{delete S.sug[d.id];limparAviso();render()},
+sugerir:d=>run(async()=>{
+  const id=String(d.id),pid=S.pid,token=S.token,pendentes=S.processando;
+  if(pendentes.has(id))return;
+  pendentes.add(id);delete S.sug[id];S.ab.add(id);render();
+  try{
+    const passos=(await api(`/ia/tarefas/${id}/sugerir-passos`,{m:"POST",timeout:90000})).passos;
+    if(S.pid!==pid||S.token!==token)return;
+    if(!Array.isArray(passos)||!passos.length)throw new Error('A IA não retornou passos. Tente gerar novamente.');
+    S.sug[id]=passos;
+  }catch(e){if(S.pid===pid&&S.token===token)throw e}
+  finally{pendentes.delete(id);if(S.pid===pid&&S.token===token&&S.view==="tarefas")render()}
+}),
+usar:d=>run(async()=>{const t0=tarefa(d.id);if(t0&&t0.passos.length&&!await ask({t:"Trocar os passos?",p:"Os passos atuais serão substituídos por estes, e o que já foi marcado será perdido.",ok:"Trocar",danger:1}))return;await api(`/tarefas/${d.id}/passos`,{m:"POST",b:{textos:S.sug[d.id]}});delete S.sug[d.id];go("tarefas")}),
+enviar:()=>run(async()=>{const q=v("q");if(!q)return;const pid=S.pid,token=S.token;S.chat.push({r:"me",t:q});render();const r=(await api(`/ia/${pid}/chat`,{m:"POST",b:{pergunta:q}})).respostas;if(S.pid!==pid||S.token!==token)return;S.chat.push({r:"ia",t:Array.isArray(r)?r.join("\n"):r});if(S.view==="chat"){render();$("#q")?.focus()}})
 };
 document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(b)A[b.dataset.a]?.(b.dataset)});
-// Enter: em formulários com vários campos só passa para o próximo campo (nunca grava); no login/chat envia
-document.addEventListener("keydown",e=>{if(e.key!=="Enter"||e.target.closest(".ov"))return;const n=e.target.closest("[data-nx]");if(n){e.preventDefault();const f=[...n.querySelectorAll("input,select")],i=f.indexOf(e.target);if(f[i+1])f[i+1].focus();return}const g=e.target.closest("[data-go]")||(e.target.id==="q"?document:null);if(g){e.preventDefault();(g===document?$("#bc"):g.querySelector(g.dataset.go))?.click()}});
-if(S.token)go(S.tipo==="cuidador"?"perfis":"tarefas");else render();
+// Enter avança pelos campos; no último campo apenas coloca o foco em Salvar.
+// Com o foco em um botão, o Enter mantém o comportamento normal do navegador.
+document.addEventListener("keydown",e=>{
+  if(e.key!=="Enter"||e.isComposing||e.target.closest(".ov"))return;
+  const n=e.target.closest("[data-nx]");
+  if(n){
+    const f=[...n.querySelectorAll("input,select")],i=f.indexOf(e.target);
+    if(i<0)return;
+    e.preventDefault();
+    const proximo=f[i+1]||n.querySelector('[data-a="salvartarefa"],[data-a="salvarperfil"],[data-a="criarconta"]');
+    proximo?.focus();return;
+  }
+  const g=e.target.closest("[data-go]")||(e.target.id==="q"?document:null);
+  if(g){e.preventDefault();(g===document?$("#bc"):g.querySelector(g.dataset.go))?.click()}
+});
+async function iniciar(){
+  if(!S.token){render();return}
+  $("#app").innerHTML='<main style="justify-content:center"><div class="card" role="status">Carregando sua sessão…</div></main>';
+  // Criança: cada vez que o app abre, a sessão é renovada por mais 7 dias.
+  if(S.tipo==="usuario_tea"){
+    try{entrada(await api("/auth/renovar",{m:"POST"}))}
+    catch(e){
+      if(e.status===401||e.status===403){sair("Sua sessão acabou. Peça ao cuidador para entrar de novo neste aparelho.");return}
+      aviso(e.message,"erro")
+    }
+  }
+  await go(S.tipo==="cuidador"?"perfis":"tarefas");
+  if(S.view==="login"||!$("#app").children.length)render();
+}
+iniciar().catch(e=>{S.view="login";render();aviso(e.message||"Não foi possível abrir sua sessão. Tente entrar novamente.","erro")});
 </script></body></html>

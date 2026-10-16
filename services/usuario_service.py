@@ -188,6 +188,15 @@ class UsuarioService:
 
         return usuario
 
+    def renovar_sessao(self, usuario_id, tipo_usuario):
+        # Só renova se a pessoa ainda existe e continua com o mesmo tipo.
+        usuario = self.repository.buscar_por_id(usuario_id)
+
+        if usuario is None or usuario.tipo_usuario != tipo_usuario:
+            raise ValueError("Sessão inválida. Entre novamente.")
+
+        return usuario
+
     def gerar_token(self, usuario):
         horas = horas_de_expiracao(usuario.tipo_usuario)
         expira_em = datetime.now(timezone.utc) + timedelta(hours=horas)

@@ -53,3 +53,21 @@ def entrar_perfil(
         )
 
     return resposta
+
+
+@router.post("/renovar")
+def renovar(
+    usuario_logado: dict = Depends(exigir_tipo_usuario("usuario_tea"))
+):
+    resposta = controller.renovar_sessao(
+        usuario_logado["usuario_id"],
+        usuario_logado["tipo_usuario"]
+    )
+
+    if not resposta["sucesso"]:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=resposta["mensagem"]
+        )
+
+    return resposta

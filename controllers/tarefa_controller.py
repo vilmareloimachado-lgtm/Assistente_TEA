@@ -57,6 +57,13 @@ class TarefaController:
         except ValueError as erro:
             return {"sucesso": False, "mensagem": str(erro)}
 
+    def adicionar_passo(self, tarefa_id, texto):
+        try:
+            tarefa = self.service.adicionar_passo(tarefa_id, texto)
+            return {"sucesso": True, "mensagem": f"Passo adicionado. A tarefa agora tem {len(tarefa.passos)} passo(s)."}
+        except ValueError as erro:
+            return {"sucesso": False, "mensagem": str(erro)}
+
     def alternar_status_passo(self, passo_id):
         try:
             passo = self.service.alternar_status_passo(passo_id)

@@ -85,6 +85,24 @@ class TarefaService:
             raise ValueError("A lista de passos não pode ficar vazia.")
         return self.repository.definir_passos(tarefa_id, lista_textos)
 
+    def adicionar_passo(self, tarefa_id, texto):
+        tarefa = self.buscar_tarefa(tarefa_id)
+
+        texto = (texto or "").strip()
+        if not texto:
+            raise ValueError("O passo não pode ficar vazio.")
+        if len(texto) > 200:
+            raise ValueError("O passo pode ter no máximo 200 caracteres.")
+
+        # Uma tarefa concluída não pode ganhar um passo pendente.
+        if tarefa.concluida:
+            raise ValueError("Marque a tarefa como pendente antes de adicionar um passo.")
+
+        atualizada = self.repository.adicionar_passo(tarefa_id, texto)
+        if atualizada is None:
+            raise ValueError("Tarefa não encontrada.")
+        return atualizada
+
     def alternar_status_passo(self, passo_id):
         passo = self.repository.alternar_status_passo(passo_id)
         if passo is None:

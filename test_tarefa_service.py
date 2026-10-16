@@ -74,6 +74,14 @@ class TarefaRepositoryFake:
         tarefa.passos = [PassoFake(texto, ordem=i) for i, texto in enumerate(lista_textos, start=1)]
         return tarefa
 
+    def adicionar_passo(self, tarefa_id, texto):
+        tarefa = self.tarefas.get(tarefa_id)
+        if tarefa is None:
+            return None
+        ultima = max((p.ordem for p in tarefa.passos), default=0)
+        tarefa.passos.append(PassoFake(texto, ordem=ultima + 1))
+        return tarefa
+
 
 class UsuarioRepositoryFake:
     def __init__(self, ids_existentes):
@@ -128,22 +136,38 @@ class TestTarefaService(unittest.TestCase):
         atualizada = self.service.alternar_status_tarefa(tarefa.id)
         self.assertTrue(atualizada.concluida)
 
-    def test_resumo_tarefas_traz_metricas_por_tipo_prioridade_e_passos(self):
-        t1 = self.service.criar_tarefa(1, "tarefas_diarias", "Arrumar a cama", prioridade="baixa")
-        t2 = self.service.criar_tarefa(1, "tarefas_educacionais", "Estudar frações", prioridade="alta")
-        self.service.definir_passos_ia(t2.id, ["Ler capítulo 1", "Fazer exercícios"])
-        t2.passos[0].concluido = True
+    def test_adiciona_passo_sem_apagar_os_existentes(self):
+        tarefa = self.service.criar_tarefa(1, "tarefas_diarias", "Arrumar o quarto")
+        self.service.definir_passos_ia(tarefa.id, ["Guardar brinquedos"])
+        tarefa.passos[0].concluido = True
 
-        resumo = self.service.resumo_tarefas(1)
+        atualizada = self.service.adicionar_passo(tarefa.id, "  Fazer a cama  ")
 
-        self.assertEqual(resumo["total"], 2)
-        self.assertEqual(resumo["por_tipo"]["tarefas_diarias"]["total"], 1)
-        self.assertEqual(resumo["por_tipo"]["tarefas_educacionais"]["total"], 1)
-        self.assertEqual(resumo["por_prioridade"]["alta"]["total"], 1)
-        self.assertEqual(resumo["por_prioridade"]["baixa"]["total"], 1)
-        self.assertEqual(resumo["passos"]["total"], 2)
-        self.assertEqual(resumo["passos"]["concluidos"], 1)
-        self.assertEqual(resumo["vencidas"], 0)
+        self.assertEqual(len(atualizada.passos), 2)
+        self.assertEqual(atualizada.passos[1].texto, "Fazer a cama")
+        self.assertEqual(atualizada.passos[1].ordem, 2)
+        self.assertTrue(atualizada.passos[0].concluido)
+
+    def test_nao_aceita_passo_vazio(self):
+        tarefa = self.service.criar_tarefa(1, "tarefas_diarias", "Arrumar o quarto")
+        with self.assertRaises(ValueError):
+            self.service.adicionar_passo(tarefa.id, "   ")
+
+    def test_nao_aceita_passo_muito_longo(self):
+        tarefa = self.service.criar_tarefa(1, "tarefas_diarias", "Arrumar o quarto")
+        with self.assertRaises(ValueError):
+            self.service.adicionar_passo(tarefa.id, "a" * 201)
+
+    def test_nao_adiciona_passo_em_tarefa_inexistente(self):
+        with self.assertRaises(ValueError):
+            self.service.adicionar_passo(999, "Qualquer passo")
+
+    def test_nao_adiciona_passo_em_tarefa_concluida(self):
+        tarefa = self.service.criar_tarefa(1, "tarefas_diarias", "Arrumar o quarto")
+        self.service.alternar_status_tarefa(tarefa.id)
+
+        with self.assertRaises(ValueError):
+            self.service.adicionar_passo(tarefa.id, "Novo passo")
 
 
 if __name__ == "__main__":

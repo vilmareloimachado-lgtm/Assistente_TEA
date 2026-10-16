@@ -32,6 +32,10 @@ class NovosPassos(BaseModel):
     textos: list[str]
 
 
+class NovoPasso(BaseModel):
+    texto: str
+
+
 class TarefaAtualizacao(BaseModel):
     titulo: str | None = None
     descricao: str | None = None
@@ -93,6 +97,29 @@ def definir_passos(
     resposta = controller.definir_passos_ia(
         tarefa_id,
         dados.textos
+    )
+
+    if not resposta["sucesso"]:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=resposta["mensagem"]
+        )
+
+    return resposta
+
+
+# ------------------------------------------------------------
+# Adicionar UM passo (sem apagar os que já existem)
+# ------------------------------------------------------------
+@router.post("/{tarefa_id}/passos/novo", status_code=status.HTTP_201_CREATED)
+def adicionar_passo(
+    tarefa_id: int,
+    dados: NovoPasso,
+    usuario_logado: dict = Depends(exigir_dono_da_tarefa)
+):
+    resposta = controller.adicionar_passo(
+        tarefa_id,
+        dados.texto
     )
 
     if not resposta["sucesso"]:

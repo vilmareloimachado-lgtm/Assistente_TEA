@@ -65,6 +65,21 @@ class UsuarioController:
         except ValueError as erro:
             return self._falha(erro)
 
+    def renovar_sessao(self, usuario_id, tipo_usuario):
+        try:
+            usuario = self.service.renovar_sessao(usuario_id, tipo_usuario)
+            token = self.service.gerar_token(usuario)
+            return {
+                "sucesso": True,
+                "mensagem": "Sessão renovada.",
+                "usuario_id": usuario.id,
+                "nome": usuario.nome,
+                "tipo_usuario": usuario.tipo_usuario,
+                "token": token
+            }
+        except ValueError as erro:
+            return self._falha(erro)
+
     # ------------------------------------------------------------
     # Cadastro
     # ------------------------------------------------------------
