@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from pydantic import BaseModel
+from pydantic import BaseModel, StrictBool
 
 from controllers.usuario_controller import UsuarioController
 from api.permissoes import exigir_tipo_usuario
@@ -43,6 +43,11 @@ class NovoPin(BaseModel):
 
 class NovoCuidadorVinculado(BaseModel):
     email: str
+    pode_enviar_materiais_sem_aprovacao: StrictBool = False
+
+
+class PermissaoMateriais(BaseModel):
+    pode_enviar_materiais_sem_aprovacao: StrictBool
 
 
 class TransferenciaPrincipal(BaseModel):
@@ -276,7 +281,8 @@ def adicionar_cuidador(
     resposta = controller.adicionar_cuidador(
         usuario_logado["usuario_id"],
         usuario_id,
-        dados.email
+        dados.email,
+        dados.pode_enviar_materiais_sem_aprovacao
     )
 
     if not resposta["sucesso"]:
@@ -285,6 +291,22 @@ def adicionar_cuidador(
             detail=resposta["mensagem"]
         )
 
+    return resposta
+
+
+@router.put("/{usuario_id}/cuidadores/{cuidador_id}/materiais")
+def atualizar_permissao_materiais(
+    usuario_id: int,
+    cuidador_id: int,
+    dados: PermissaoMateriais,
+    usuario_logado: dict = Depends(exigir_tipo_usuario("cuidador"))
+):
+    resposta = controller.atualizar_permissao_materiais(
+        usuario_logado["usuario_id"], usuario_id, cuidador_id,
+        dados.pode_enviar_materiais_sem_aprovacao
+    )
+    if not resposta["sucesso"]:
+        raise HTTPException(status_code=422, detail=resposta["mensagem"])
     return resposta
 
 

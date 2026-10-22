@@ -15,6 +15,7 @@ class Vinculo(Base):
     cuidador_id = Column(Integer, ForeignKey("usuarios.id", ondelete="CASCADE"), nullable=False)
     usuario_id = Column(Integer, ForeignKey("usuarios.id", ondelete="CASCADE"), nullable=False)
     principal = Column(Boolean, nullable=False, default=False)
+    pode_enviar_materiais_sem_aprovacao = Column(Boolean, nullable=False, default=False, server_default="0")
     criado_em = Column(TIMESTAMP, server_default=func.now())
 
     def __repr__(self):

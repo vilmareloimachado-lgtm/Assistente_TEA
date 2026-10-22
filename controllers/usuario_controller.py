@@ -151,6 +151,7 @@ class UsuarioController:
             for cuidador in cuidadores:
                 resumo = self._resumo_usuario(cuidador)
                 resumo["principal"] = self.service.eh_principal(cuidador.id, usuario_id)
+                resumo["pode_enviar_materiais_sem_aprovacao"] = self.service.permissao_materiais(cuidador.id, usuario_id)
                 lista.append(resumo)
 
             return {
@@ -164,13 +165,24 @@ class UsuarioController:
     # ------------------------------------------------------------
     # Vinculos
     # ------------------------------------------------------------
-    def adicionar_cuidador(self, cuidador_id, usuario_id, email_novo_cuidador):
+    def adicionar_cuidador(self, cuidador_id, usuario_id, email_novo_cuidador,
+                           pode_enviar_materiais_sem_aprovacao=False):
         try:
-            self.service.adicionar_cuidador(cuidador_id, usuario_id, email_novo_cuidador)
+            self.service.adicionar_cuidador(
+                cuidador_id, usuario_id, email_novo_cuidador,
+                pode_enviar_materiais_sem_aprovacao
+            )
             return {
                 "sucesso": True,
                 "mensagem": "Cuidador adicionado."
             }
+        except ValueError as erro:
+            return self._falha(erro)
+
+    def atualizar_permissao_materiais(self, principal_id, usuario_id, cuidador_id, permitido):
+        try:
+            self.service.atualizar_permissao_materiais(principal_id, usuario_id, cuidador_id, permitido)
+            return {"sucesso": True, "mensagem": "Permissão de materiais atualizada."}
         except ValueError as erro:
             return self._falha(erro)
 

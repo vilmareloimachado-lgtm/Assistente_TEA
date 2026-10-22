@@ -6,6 +6,7 @@ from api.rotas_tarefas import router as tarefas_router
 from api.rotas_passos import router as passos_router
 from api.rotas_ia import router as ia_router
 from api.rotas_auth import router as auth_router
+from api.rotas_materiais import router as materiais_router
 
 app = FastAPI(
     title="doroTEA",
@@ -25,6 +26,7 @@ app.include_router(tarefas_router)
 app.include_router(passos_router)
 app.include_router(ia_router)
 app.include_router(auth_router)
+app.include_router(materiais_router)
 
 
 @app.get("/")

@@ -286,7 +286,8 @@ class UsuarioService:
         vinculo = self.repository.buscar_vinculo(cuidador_id, usuario_id)
         return vinculo is not None and bool(vinculo.principal)
 
-    def adicionar_cuidador(self, cuidador_id, usuario_id, email_novo_cuidador):
+    def adicionar_cuidador(self, cuidador_id, usuario_id, email_novo_cuidador,
+                           pode_enviar_materiais_sem_aprovacao=False):
         self._exigir_principal(cuidador_id, usuario_id)
 
         email = (email_novo_cuidador or "").strip()
@@ -297,7 +298,22 @@ class UsuarioService:
         if self.repository.buscar_vinculo(novo.id, usuario_id) is not None:
             raise ValueError("Esse cuidador já acompanha esse perfil.")
 
+        if pode_enviar_materiais_sem_aprovacao:
+            return self.repository.criar_vinculo(
+                novo.id, usuario_id, principal=False,
+                pode_enviar_materiais_sem_aprovacao=True
+            )
         return self.repository.criar_vinculo(novo.id, usuario_id, principal=False)
+
+    def permissao_materiais(self, cuidador_id, usuario_id):
+        vinculo = self.repository.buscar_vinculo(cuidador_id, usuario_id)
+        return bool(vinculo and getattr(vinculo, "pode_enviar_materiais_sem_aprovacao", False))
+
+    def atualizar_permissao_materiais(self, principal_id, usuario_id, cuidador_id, permitido):
+        self._exigir_principal(principal_id, usuario_id)
+        return self.repository.atualizar_permissao_materiais(
+            principal_id, cuidador_id, usuario_id, permitido
+        )
 
     def remover_cuidador(self, cuidador_id, usuario_id, cuidador_removido_id):
         self._exigir_principal(cuidador_id, usuario_id)

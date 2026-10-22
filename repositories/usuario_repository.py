@@ -158,17 +158,37 @@ class UsuarioRepository:
             )
             return session.scalar(comando)
 
-    def criar_vinculo(self, cuidador_id, usuario_id, principal=False):
+    def criar_vinculo(self, cuidador_id, usuario_id, principal=False,
+                      pode_enviar_materiais_sem_aprovacao=False):
         with SessionLocal() as session:
             vinculo = Vinculo(
                 cuidador_id=cuidador_id,
                 usuario_id=usuario_id,
-                principal=principal
+                principal=principal,
+                pode_enviar_materiais_sem_aprovacao=pode_enviar_materiais_sem_aprovacao
             )
             session.add(vinculo)
             session.commit()
             session.refresh(vinculo)
             return vinculo
+
+    def atualizar_permissao_materiais(self, principal_id, cuidador_id, usuario_id, permitido):
+        with SessionLocal() as session:
+            principal = session.scalar(select(Vinculo).where(
+                Vinculo.cuidador_id == principal_id, Vinculo.usuario_id == usuario_id
+            ).with_for_update())
+            if principal is None or not principal.principal:
+                raise ValueError("Apenas o cuidador principal pode fazer isso.")
+            vinculo = session.scalar(select(Vinculo).where(
+                Vinculo.cuidador_id == cuidador_id, Vinculo.usuario_id == usuario_id
+            ).with_for_update())
+            if vinculo is None:
+                raise ValueError("Esse cuidador não acompanha esse perfil.")
+            if vinculo.principal:
+                raise ValueError("O cuidador principal já envia materiais diretamente.")
+            vinculo.pode_enviar_materiais_sem_aprovacao = permitido
+            session.commit()
+            return True
 
     def remover_vinculo(self, cuidador_id, usuario_id):
         with SessionLocal() as session:
